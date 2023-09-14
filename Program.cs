@@ -1,5 +1,9 @@
 
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 
 public class LivroContexto : DbContext
@@ -19,3 +23,6 @@ public class Livro
     public string Autor { get; set; }
     public decimal Preço { get; set; }
 }
+
+
+
