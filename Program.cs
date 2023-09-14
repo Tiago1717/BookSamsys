@@ -15,7 +15,7 @@ public class LivroContexto : DbContext
     }
 }
 
-[Route("api/livros")]
+[Route("api/livros")] //ajudam a definir como o controlador lida com as solicitações de uma API
 [ApiController]
 public class LivrosController : ControllerBase //É algo que responde aos pedidios feitos pelo HTML (utilizador)
 {
