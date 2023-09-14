@@ -15,6 +15,18 @@ public class LivroContexto : DbContext
     }
 }
 
+[Route("api/livros")]
+[ApiController]
+public class LivrosController : ControllerBase //É algo que responde aos pedidios feitos pelo HTML (utilizador)
+{
+    private readonly LivroContexto _Contexto;
+
+    public LivrosController(LivroContexto contexto)
+    {
+        _Contexto = contexto;
+    }
+}
+
 public class Livro
 {
     public int Id { get; set; }
