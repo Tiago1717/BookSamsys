@@ -25,6 +25,12 @@ public class LivrosController : ControllerBase //É algo que responde aos pedidio
     {
         _Contexto = contexto;
     }
+
+    [HttpGet] //fica com os dados e permite o GetLivros();
+    public async Task<ActionResult<IEnumerable<Livro>>> GetLivros()
+    {
+        return await _Contexto.Livros.ToListAsync();
+    }
 }
 
 public class Livro
