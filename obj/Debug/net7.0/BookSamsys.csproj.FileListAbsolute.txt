@@ -1,0 +1,8 @@
+C:\Users\tiago\OneDrive - Colegio de Gaia\Samsys\BookSamsys\obj\Debug\net7.0\BookSamsys.csproj.AssemblyReference.cache
+C:\Users\tiago\OneDrive - Colegio de Gaia\Samsys\BookSamsys\obj\Debug\net7.0\BookSamsys.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\tiago\OneDrive - Colegio de Gaia\Samsys\BookSamsys\obj\Debug\net7.0\BookSamsys.AssemblyInfoInputs.cache
+C:\Users\tiago\OneDrive - Colegio de Gaia\Samsys\BookSamsys\obj\Debug\net7.0\BookSamsys.AssemblyInfo.cs
+C:\Users\tiago\OneDrive - Colegio de Gaia\Samsys\BookSamsys\obj\Debug\net7.0\BookSamsys.csproj.CoreCompileInputs.cache
+C:\Users\tiago\OneDrive - Colegio de Gaia\Samsys\BookSamsys\obj\Debug\net7.0\BookSamsys.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\tiago\OneDrive - Colegio de Gaia\Samsys\BookSamsys\obj\Debug\net7.0\BookSamsys.RazorAssemblyInfo.cache
+C:\Users\tiago\OneDrive - Colegio de Gaia\Samsys\BookSamsys\obj\Debug\net7.0\BookSamsys.RazorAssemblyInfo.cs
