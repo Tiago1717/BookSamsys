@@ -1,5 +1,7 @@
 using Livros;
 
+namespace livrorep;
+
 public class LivroRepository : ILivroRepository
 {
     private readonly LivroContexto _contexto;
