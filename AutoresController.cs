@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 
-namespace Autores
+namespace Autores2
 {
 
     public class AutoresContexto : DbContext
