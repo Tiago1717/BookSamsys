@@ -1,10 +1,10 @@
-using livros;
+using Books;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Livros
+namespace Booksc
 {
     public class LivroContexto : DbContext
     {
@@ -17,11 +17,11 @@ namespace Livros
 
     [Route($"{nameof(Livros)}")] //ajudam a definir como o controlador lida com as solicitações de uma API
     [ApiController]
-    public class LivrosController : ControllerBase //É algo que responde aos pedidios feitos pelo HTML (utilizador)
+    public class BookController : ControllerBase //É algo que responde aos pedidios feitos pelo HTML (utilizador)
     {
         private readonly LivroContexto _contexto;
 
-        public LivrosController(LivroContexto contexto)
+        public BookController(LivroContexto contexto)
         {
             _contexto = contexto;
         }

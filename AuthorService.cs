@@ -1,19 +1,21 @@
 
-using autores;
+using authors;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Autores2;
+using Authors2;
 using IAutor;
-public class AutorService : IAutorService
-{
-    private readonly IAutorRepository _autorRepository;
 
-    public AutorService(IAutorRepository autorRepository)
+namespace Service;
+public class AuthorService : IAuthorService
+{
+    private readonly IAuthorRepository _autorRepository;
+
+    public AuthorService(IAuthorRepository autorRepository)
     {
         _autorRepository = autorRepository;
     }
 
-    public Task<Autor> CreateAutoresAsync(Autor autor)
+    public Task<Author> CreateAutoresAsync(Author autor)
     {
         throw new NotImplementedException();
     }
@@ -23,17 +25,17 @@ public class AutorService : IAutorService
         throw new NotImplementedException();
     }
 
-    public Task<IEnumerable<Autor>> GetAutoresAsync()
+    public Task<IEnumerable<Author>> GetAutoresAsync()
     {
         throw new NotImplementedException();
     }
 
-    public Task<Autor> GetAutoresAsync(int id)
+    public Task<Author> GetAutoresAsync(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task UpdateAutoresAsync(int id, Autor autor)
+    public Task UpdateAutoresAsync(int id, Author autor)
     {
         throw new NotImplementedException();
     }

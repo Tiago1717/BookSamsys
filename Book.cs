@@ -1,7 +1,7 @@
 
 
-namespace livros;
-public class Livro
+namespace Books;
+public class Book
 {
     public decimal Id { get; set; }
     public string ISBN { get; set; }

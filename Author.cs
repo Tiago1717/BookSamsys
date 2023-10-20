@@ -6,9 +6,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 
-namespace autores;
+namespace authors;
 
-public class Autor
+public class Author
 {
     public int Id { get; set; }
     public string Nome { get; set; }

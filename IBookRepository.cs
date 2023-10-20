@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Livros;
+namespace Books;
 
-    public interface ILivroRepository
+    public interface IBookRepository
     {
         Task<IEnumerable<Livro>> GetLivrosAsync();
         Task<Livro> GetLivroAsync(int id);
@@ -15,7 +15,7 @@ namespace Livros;
         Task DeleteLivroAsync(int id);
     }
 
-public class LivroRepository : ILivroRepository
+public class LivroRepository : IBookRepository
 {
     private readonly LivroContexto _contexto;
 

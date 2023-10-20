@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace Autores
 {
-    public interface IAutorRepository
+    public interface IAuthorRepository
     {
-        Task<IEnumerable<Autor>> GetAutoresAsync();
-        Task<Autor> GetAutorAsync(int id);
-        Task CreateAutorAsync(Autor autor);
-        Task UpdateAutorAsync(Autor autor);
+        Task<IEnumerable<Author>> GetAutoresAsync();
+        Task<Author> GetAutorAsync(int id);
+        Task CreateAutorAsync(Author autor);
+        Task UpdateAutorAsync(Author autor);
         Task DeleteAutorAsync(int id);
     }
 
-    public class AutorRepository : IAutorRepository
+    public class AutorRepository : IAuthorRepository
     {
         private readonly AutoresContexto _contexto;
 
@@ -25,23 +25,23 @@ namespace Autores
             _contexto = contexto;
         }
 
-        public async Task<IEnumerable<Autor>> GetAutoresAsync()
+        public async Task<IEnumerable<Author>> GetAutoresAsync()
         {
             return _contexto.Autores.ToList();
         }
 
-        public async Task<Autor> GetAutorAsync(int id)
+        public async Task<Author> GetAutorAsync(int id)
         {
             return _contexto.Autores.FirstOrDefault(a => a.Id == id);
         }
 
-        public async Task CreateAutorAsync(Autor autor)
+        public async Task CreateAutorAsync(Author autor)
         {
             _contexto.Autores.Add(autor);
             await _contexto.SaveChangesAsync();
         }
 
-        public async Task UpdateAutorAsync(Autor autor)
+        public async Task UpdateAutorAsync(Author autor)
         {
             _contexto.Autores.Update(autor);
             await _contexto.SaveChangesAsync();

@@ -1,40 +1,40 @@
-using autores;
+using authors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 
-namespace Autores2
+namespace Authors2
 {
 
-    public class AutoresContexto : DbContext
+    public class AuthorsContext : DbContext
     {
-        public DbSet<Autor> Autores { get; set; }
+        public DbSet<Author> Autores { get; set; }
 
-        public AutoresContexto(DbContextOptions<AutoresContexto> options) : base(options)
+        public AuthorsContext(DbContextOptions<AuthorsContext> options) : base(options)
         {
         }
     }
 
     [Route("api/livros")] 
     [ApiController]
-    public class AutoresController : ControllerBase
+    public class AuthorController : ControllerBase
     {
-        private readonly AutoresContexto _context;
+        private readonly AuthorsContext _context;
 
-        public AutoresController(AutoresContexto context)
+        public AuthorController(AuthorsContext context)
         {
             _context = context;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Autor>>> GetAutores()
+        public async Task<ActionResult<IEnumerable<Author>>> GetAutores()
         {
-            var autores = await _context.Autores.ToListAsync();
+            var authors = await _context.Autores.ToListAsync();
             return Ok(autores);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Autor>> GetAutor(int id)
+        public async Task<ActionResult<Author>> GetAutor(int id)
         {
             var autor = await _context.Autores.FindAsync(id);
 
@@ -47,7 +47,7 @@ namespace Autores2
         }
 
         [HttpPost]
-        public async Task<ActionResult<Autor>> PostAutor(Autor autor)
+        public async Task<ActionResult<Author>> PostAutor(Author autor)
         {
             _context.Autores.Add(autor);
             await _context.SaveChangesAsync();
@@ -56,7 +56,7 @@ namespace Autores2
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAutor(int id, Autor autor)
+        public async Task<IActionResult> PutAutor(int id, Author autor)
         {
             if (id != autor.Id)
             {
