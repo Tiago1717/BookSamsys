@@ -1,37 +1,37 @@
-using Livros;
-using livrorep;
+using Book;
+using BookRepository;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Books;
+namespace IBookRepository;
 
     public interface IBookRepository
     {
-        Task<IEnumerable<Livro>> GetLivrosAsync();
-        Task<Livro> GetLivroAsync(int id);
-        Task CreateLivroAsync(Livro livro);
-        Task UpdateLivroAsync(Livro livro);
-        Task DeleteLivroAsync(int id);
+        Task<IEnumerable<Book>> GetBooksAsync();
+        Task<Book> GetBookAsync(int id);
+        Task CreateBookAsync(Book Book);
+        Task UpdateBookAsync(Book Book);
+        Task DeleteBookAsync(int id);
     }
 
-public class LivroRepository : IBookRepository
+public class BookRepository : IBookRepository
 {
-    private readonly LivroContexto _contexto;
+    private readonly BookContext _context;
 
-    public LivroRepository(LivroContexto contexto)
+    public BookRepository(BookContext context)
     {
-        _contexto = contexto;
+        _context = context;
     }
 
-    public async Task<IEnumerable<Livro>> GetLivrosAsync()
+    public async Task<IEnumerable<Books>> GetBooksAsync()
     {
-        return _contexto.Livros.ToList(); 
+        return _context.Book.ToList(); 
     }
 
-    public async Task<Livro> GetLivroAsync(int id)
+    public async Task<Books> GetBookAsync(int id)
     {
-        return _contexto.Livros.FirstOrDefault(l => l.Id == id); 
+        return _context.Book.FirstOrDefault(l => l.Id == id); 
     }
 
     public async Task CreateLivroAsync(Livro livro)
@@ -54,5 +54,30 @@ public class LivroRepository : IBookRepository
             _contexto.Livros.Remove(livro);
             await _contexto.SaveChangesAsync();
         }
+    }
+
+    public Task<IEnumerable<Book>> GetBooksAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<Book> GetBookAsync(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task CreateBookAsync(Book Book)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task UpdateBookAsync(Book Book)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task DeleteBookAsync(int id)
+    {
+        throw new NotImplementedException();
     }
 }

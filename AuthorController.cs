@@ -8,14 +8,14 @@ namespace Authors2
 
     public class AuthorsContext : DbContext
     {
-        public DbSet<Author> Autores { get; set; }
+        public DbSet<Author> Authors { get; set; }
 
-        public AuthorsContext(DbContextOptions<AuthorsContext> options) : base(options)
+        public AuthorsContext(DbContextptions<AuthorsContext> options) : base(options)
         {
         }
     }
 
-    [Route("api/livros")] 
+    [Route("api/livros")]
     [ApiController]
     public class AuthorController : ControllerBase
     {
@@ -27,43 +27,43 @@ namespace Authors2
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Author>>> GetAutores()
+        public async Task<ActionResult<IEnumerable<Author>>> GetAuthors()
         {
-            var authors = await _context.Autores.ToListAsync();
-            return Ok(autores);
+            var authors = await _context.Authors.ToListAsync();
+            return Ok(authors);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Author>> GetAutor(int id)
+        public async Task<ActionResult<Author>> GetAuthor(int id)
         {
-            var autor = await _context.Autores.FindAsync(id);
+            var author = await _context.Authors.FindAsync(id);
 
-            if (autor == null)
+            if (author == null)
             {
                 return NotFound();
             }
 
-            return Ok(autor);
+            return Ok(author);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Author>> PostAutor(Author autor)
+        public async Task<ActionResult<Author>> PostAuthor(Author author)
         {
-            _context.Autores.Add(autor);
+            _context.Authors.Add(author);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetAutor), new { ida = autor.Id }, autor);
+            return CreatedAtAction(nameof(GetAuthor), new { ida = author.Id }, author);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAutor(int id, Author autor)
+        public async Task<IActionResult> PutAuthor(int id, Author author)
         {
-            if (id != autor.Id)
+            if (id != author.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(autor).State = EntityState.Modified;
+            _context.Entry(author).State = EntityState.Modified;
 
             try
             {
@@ -71,7 +71,7 @@ namespace Authors2
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AutorExists(id))
+                if (!AuthorExists(id))
                 {
                     return NotFound();
                 }
@@ -85,25 +85,26 @@ namespace Authors2
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAutor(int id)
+        public async Task<IActionResult> DeleteAuthor(int id)
         {
-            var autor = await _context.Autores.FindAsync(id);
+            var author = await _context.Authors.FindAsync(id);
 
-            if (autor == null)
+            if (author == null)
             {
                 return NotFound();
             }
 
-            _context.Autores.Remove(autor);
+            _context.Authors.Remove(author);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool AutorExists(int id)
+        private bool AuthorExists(int id)
         {
-            return _context.Autores.Any(e => e.Id == id);
+            return _context.Authors.Any(e => e.Id == id);
         }
     }
 }
+
 

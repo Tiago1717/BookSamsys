@@ -1,60 +1,59 @@
-using autores;
-using Livros;
-using Autores2;
+using authors;
+using Authors2;
+using IAuthorService;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Autores
+namespace IAuthorRepository;
+
+public interface IAuthorRepository
 {
-    public interface IAuthorRepository
+    Task<IEnumerable<Author>> GetAuthorsAsync();
+    Task<Author> GetAuthorAsync(int id);
+    Task CreateAuthorAsync(Author author);
+    Task UpdateAuthorAsync(Author author);
+    Task DeleteAuthorAsync(int id);
+}
+
+public class AuthorRepository : IAuthorRepository
+{
+    private readonly AuthorsContext _context;
+
+    public AuthorRepository(AuthorsContext context)
     {
-        Task<IEnumerable<Author>> GetAutoresAsync();
-        Task<Author> GetAutorAsync(int id);
-        Task CreateAutorAsync(Author autor);
-        Task UpdateAutorAsync(Author autor);
-        Task DeleteAutorAsync(int id);
+        _context = context;
     }
 
-    public class AutorRepository : IAuthorRepository
+    public async Task<IEnumerable<Author>> GetAuthorsAsync()
     {
-        private readonly AutoresContexto _contexto;
+        return _context.Authors.ToList();
+    }
 
-        public AutorRepository(AutoresContexto contexto)
-        {
-            _contexto = contexto;
-        }
+    public async Task<Author> GetAuthorAsync(int id)
+    {
+        return _context.Authors.FirstOrDefault(a => a.Id == id);
+    }
 
-        public async Task<IEnumerable<Author>> GetAutoresAsync()
-        {
-            return _contexto.Autores.ToList();
-        }
+    public async Task CreateAuthorAsync(Author author)
+    {
+        _context.Authors.Add(author);
+        await _context.SaveChangesAsync();
+    }
 
-        public async Task<Author> GetAutorAsync(int id)
-        {
-            return _contexto.Autores.FirstOrDefault(a => a.Id == id);
-        }
+    public async Task UpdateAuthorAsync(Author author)
+    {
+        _context.Authors.Update(author);
+        await _context.SaveChangesAsync();
+    }
 
-        public async Task CreateAutorAsync(Author autor)
+    public async Task DeleteAuthorAsync(int id)
+    {
+        var author = _context.Authors.FirstOrDefault(a => a.Id == id);
+        if (author != null)
         {
-            _contexto.Autores.Add(autor);
-            await _contexto.SaveChangesAsync();
-        }
-
-        public async Task UpdateAutorAsync(Author autor)
-        {
-            _contexto.Autores.Update(autor);
-            await _contexto.SaveChangesAsync();
-        }
-
-        public async Task DeleteAutorAsync(int id)
-        {
-            var autor = _contexto.Autores.FirstOrDefault(a => a.Id == id);
-            if (autor != null)
-            {
-                _contexto.Autores.Remove(autor);
-                await _contexto.SaveChangesAsync();
-            }
+            _context.Authors.Remove(author);
+            await _context.SaveChangesAsync();
         }
     }
 }

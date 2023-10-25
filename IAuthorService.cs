@@ -1,12 +1,12 @@
 
-using autores;
+using authors;
 
-namespace IAutor;
+namespace IAuthorService;
 public interface IAuthorService
 {
-    Task<IEnumerable<Author>> GetAutoresAsync();
-    Task<Author> GetAutoresAsync(int id);
-    Task<Author> CreateAutoresAsync(Author autor);
-    Task UpdateAutoresAsync(int id, Author autor);
-    Task DeleteAutoresAsync(int id);
+    Task<IEnumerable<Author>> GetAuthorsAsync();
+    Task<Author> GetAuthorsAsync(int id);
+    Task<Author> CreateAuthorsAsync(Author author);
+    Task UpdateAuthorsAsync(int id, Author author);
+    Task DeleteAuthorsAsync(int id);
 }

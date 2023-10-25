@@ -6,40 +6,63 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
-public class LivroContexto : DbContext
+    public class Startup
 {
-    public DbSet<Livro> Livros { get; set; } //base de dados- guarda todos os dados dos livros
-
-    public LivroContexto(DbContextOptions<LivroContexto> options) : base(options)
+    public Startup(IConfiguration configuration)
     {
+        Configuration = configuration;
+    }
+
+    public IConfiguration Configuration { get; }
+
+    public void ConfigureServices(IServiceCollection services)
+    {
+
+        services.AddScoped<BookService>();
+        services.AddScoped<AuthorService>();
+
+        services.AddAutoMapper(typeof(MappingProfile));
+
+        services.AddControllers().AddNewtonsoftJson(options =>
+        {
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+        });
+
+
+
+
+
+
+        services.AddDbContext<AppDBContext>(options =>
+        options.UseSqlServer(Configuration.GetConnectionString("DevConnection")));
+
+
+        services.AddCors();
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        app.UseCors(options =>
+        options.WithOrigins("http://localhost:3000")
+        .AllowAnyHeader()
+        .AllowAnyMethod());
+
+
+        if (env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
+        }
+
+        app.UseRouting();
+
+        app.UseAuthorization();
+
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllers();
+        });
     }
 }
-
-[Route("api/livros")] //ajudam a definir como o controlador lida com as solicitações de uma API
-[ApiController]
-public class LivrosController : ControllerBase //É algo que responde aos pedidios feitos pelo HTML (utilizador)
-{
-    private readonly LivroContexto _Contexto;
-
-    public LivrosController(LivroContexto contexto)
-    {
-        _Contexto = contexto;
-    }
-
-    [HttpGet] //fica com os dados e permite o GetLivros();
-    public async Task<ActionResult<IEnumerable<Livro>>> GetLivros()
-    {
-        return await _Contexto.Livros.ToListAsync();
-    }
-}
-
-public class Livro
-{
-    public int Id { get; set; }
-    public string ISBN { get; set; }
-    public string Nome { get; set; }
-    public string Autor { get; set; }
-    public decimal Preço { get; set; }
 }
 
 

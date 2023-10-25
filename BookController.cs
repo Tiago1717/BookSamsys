@@ -1,77 +1,77 @@
-using Books;
+using Book;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Booksc
+namespace BooksController
 {
-    public class LivroContexto : DbContext
+    public class BookContext : DbContext
     {
-        public DbSet<Livro> Livros { get; set; } //base de dados- guarda todos os dados dos livros
+        public DbSet<Book> Books { get; set; } //base de dados- guarda todos os dados dos livros
 
-        public LivroContexto(DbContextOptions<LivroContexto> options) : base(options)
+        public BookContext(DbContextOptions<BookContext> options) : base(options)
         {
         }
     }
 
-    [Route($"{nameof(Livros)}")] //ajudam a definir como o controlador lida com as solicitações de uma API
+    [Route($"{nameof(Book)}")] //ajudam a definir como o controlador lida com as solicitações de uma API
     [ApiController]
     public class BookController : ControllerBase //É algo que responde aos pedidios feitos pelo HTML (utilizador)
     {
-        private readonly LivroContexto _contexto;
+        private readonly BookContext _context;
 
-        public BookController(LivroContexto contexto)
+        public BookController(BookContext context)
         {
-            _contexto = contexto;
+            _context = context;
         }
 
         [HttpGet] //fica com os dados e permite o GetLivros();
-        public async Task<ActionResult<IEnumerable<Livro>>> GetLivros()
+        public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
         {
-            return await _contexto.Livros.ToListAsync();
+            return await _context.Books.ToListAsync();
         }
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Livro>> GetLivro(int id)
+        public async Task<ActionResult<Book>> GetBook(int id)
         {
-            var livro = await _contexto.Livros.FindAsync(id);
+            var book = await _context.Books.FindAsync(id);
 
-            if (livro == null)
+            if (Book == null)
             {
                 return NotFound();
             }
 
-            return livro;
+            return book;
         }
         [HttpPost]
-        public async Task<ActionResult<Livro>> PostLivro(Livro livro)
+        public async Task<ActionResult<Book>> PostLivro(Book book)
         {
-            _contexto.Livros.Add(livro);
-            await _contexto.SaveChangesAsync();
+            _context.Books.Add(book);
+            await _context.SaveChangesAsync();
 
-            return CreatedAtAction($"{nameof(GetLivro)}", new { id = livro.Id }, livro);
+            return CreatedAtAction($"{nameof(GetBook)}", new { id = Book.Id }, Book);
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLivro(int id, Livro livro)
+        public async Task<IActionResult> PutLivro(int id, Book book)
         {
-            if (id != livro.Id)
+            if (id != book.Id)
             {
                 return BadRequest();
             }
 
-            _contexto.Entry(livro).State = EntityState.Modified;
+            _context.Entry(book).State = EntityState.Modified;
 
             try
             {
-                await _contexto.SaveChangesAsync();
+                await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                bool livroExists = await _contexto.Livros.AnyAsync(l => l.Id == id);
+                bool BookExists = await _context.Books.AnyAsync(l => l.Id == id);
 
-                if (!livroExists)
+                if (!BookExists)
                 {
                     return NotFound();
                 }
@@ -87,18 +87,18 @@ namespace Booksc
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLivro(int id)
         {
-            var livro = await _contexto.Livros.FindAsync(id);
-            if (livro == null)
+            var book = await _context.Books.FindAsync(id);
+            if (book == null)
             {
                 return NotFound();
             }
 
-            livro.Eliminado = true;
-            await _contexto.SaveChangesAsync();
+            _context.Books.Remove(book);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool LivroExiste(int id) => _contexto.Livros.Any(e => e.Id == id);
+        private bool LivroExiste(int id) => _context.Books.Any(e => e.Id == id);
     }
 }

@@ -3,19 +3,19 @@ using authors;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Authors2;
-using IAutor;
+using IAuthorService;
 
-namespace Service;
+namespace AuthorService;
 public class AuthorService : IAuthorService
 {
-    private readonly IAuthorRepository _autorRepository;
+    private readonly IAuthorRepository _authorRepository;
 
-    public AuthorService(IAuthorRepository autorRepository)
+    public AuthorService(IAuthorRepository authorRepository)
     {
-        _autorRepository = autorRepository;
+        _authorRepository = authorRepository;
     }
 
-    public Task<Author> CreateAutoresAsync(Author autor)
+    public Task<Author> CreateAutoresAsync(Author author)
     {
         throw new NotImplementedException();
     }
@@ -40,3 +40,4 @@ public class AuthorService : IAuthorService
         throw new NotImplementedException();
     }
 }
+

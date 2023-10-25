@@ -1,10 +1,11 @@
-using Books;
+using Book;
+using IBookRepository;
 
-namespace livrorep;
+namespace BookRepository;
 
 public class BookRepository : IBookRepository
 {
-    private readonly LivroContexto _contexto;
+    private readonly BookContext _contexto;
 
     public BookRepository(LivroContexto contexto)
     {

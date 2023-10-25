@@ -1,9 +1,10 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Books;
-using IBooks;
+using Book;
+using IBookRepository;
 
+namespace BookService;
 public class BookService : IBookService
 {
     private readonly IBookRepository _BookRepository;

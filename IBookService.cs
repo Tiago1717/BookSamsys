@@ -1,11 +1,13 @@
 
-namespace IBooks;
+using Book;
+
+namespace IBookService;
 
 public interface IBookService
 {
     Task<IEnumerable<Book>> GetBooksAsync();
-    Task<Livro> GetBookAsync(int id);
-    Task<Livro> CreateLivroAsync(Livro livro);
-    Task UpdateLivroAsync(int id, Livro livro);
-    Task DeleteLivroAsync(int id);
+    Task<Book> GetBookAsync(int id);
+    Task<Book> CreateBookAsync(Book book);
+    Task UpdateBookAsync(int id, Book book);
+    Task DeleteBookAsync(int id);
 }
