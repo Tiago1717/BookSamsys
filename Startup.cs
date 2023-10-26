@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using AuthorController;
 
 namespace Program
 {
@@ -18,9 +19,9 @@ namespace Program
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<LivroContexto>(options =>
+            services.AddDbContext<BookContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDbContext<AutoresContexto>();
+            services.AddDbContext<AuthorsContext>();
 
             services.AddControllers();
         }

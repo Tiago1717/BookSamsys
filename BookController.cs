@@ -38,7 +38,7 @@ namespace BooksController
         {
             var book = await _context.Books.FindAsync(id);
 
-            if (Book == null)
+            if (book == null)
             {
                 return NotFound();
             }
@@ -46,12 +46,12 @@ namespace BooksController
             return book;
         }
         [HttpPost]
-        public async Task<ActionResult<Book>> PostLivro(Book book)
+        public async Task<ActionResult<book>> PostLivro(Book book)
         {
             _context.Books.Add(book);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction($"{nameof(GetBook)}", new { id = Book.Id }, Book);
+            return CreatedAtAction($"{nameof(GetBook)}", new { id = book.Id }, book);
         }
         [HttpPut("{id}")]
         public async Task<IActionResult> PutLivro(int id, Book book)
