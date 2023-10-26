@@ -34,25 +34,25 @@ public class BookRepository : IBookRepository
         return _context.Book.FirstOrDefault(l => l.Id == id); 
     }
 
-    public async Task CreateLivroAsync(Livro livro)
+    public async Task CreateBookAsync(book Book)
     {
-        _contexto.Livros.Add(livro); 
-        await _contexto.SaveChangesAsync();
+        _context.Books.Add(Book); 
+        await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateLivroAsync(Livro livro)
+    public async Task UpdateBookAsync(book Book)
     {
-        _contexto.Livros.Update(livro);
-        await _contexto.SaveChangesAsync();
+        _context.Books.Update(Book);
+        await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteLivroAsync(int id)
+    public async Task DeleteBookAsync(int id)
     {
-        var livro = _contexto.Livros.FirstOrDefault(l => l.Id == id);
-        if (livro != null)
+        var book = _context.Books.FirstOrDefault(l => l.Id == id);
+        if (book != null)
         {
-            _contexto.Livros.Remove(livro);
-            await _contexto.SaveChangesAsync();
+            _context.Books.Remove(book);
+            await _context.SaveChangesAsync();
         }
     }
 
