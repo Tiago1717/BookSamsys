@@ -1,8 +1,15 @@
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using WebAPI.Entities;
+using WebAPI.Infrastructure.DTOs;
+using WebAPI.Infrastructure.Services;
 using Book;
 using IBookRepository;
+using IBookService;
 
 namespace BookService;
 public class BookService : IBookService
@@ -14,28 +21,41 @@ public class BookService : IBookService
         _BookRepository = BookRepository;
     }
 
-    Task<Livro> IBookService.CreateBookAsync(Book book)
+    async Task<Book> IBookService.CreateBookAsync(Book book)
     {
-        throw new NotImplementedException();
+        await _BookRepository.AddAsync(book);
+        await _BookRepository.SaveChangesAsync();
+        return book;
     }
 
-    Task IBookService.DeleteBookAsync(int id)
+    async Task IBookService.DeleteBookAsync(int id)
     {
-        throw new NotImplementedException();
+        var book = await _BookRepository.FindAsync(id);
+        if (book != null)
+        {
+            _BookRepository.Remove(book);
+            await _BookRepository.SaveChangesAsync();
+        }
+    }
+    async Task<Book> IBookService.GetBookAsync(int id)
+    {
+        return await _BookRepository.FindAsync(id);
     }
 
-    Task<Livro> IBookService.GetBookAsync(int id)
+    async Task<IEnumerable<Book>> IBookService.GetBooksAsync()
     {
-        throw new NotImplementedException();
+        return await _BookRepository.ToListAsync();
     }
 
-    Task<IEnumerable<Book>> IBookService.GetBooksAsync()
+    async Task IBookService.UpdateBookAsync(int id, Book book)
     {
-        throw new NotImplementedException();
-    }
-
-    Task IBookService.UpdateBookAsync(int id, Book Book)
-    {
-        throw new NotImplementedException();
+        var existing = await _BookRepository.FindAsync(id);
+        if (existing != null)
+        {
+            existing.name = book.name;
+            existing.Author = book.Author;
+            existing.Id = book.id;
+            await _BookRepository.SaveChangesAsync();
+        }
     }
 }

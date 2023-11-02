@@ -4,20 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+
 namespace BooksController
 {
-    public class BookContext : DbContext
-    {
-        public DbSet<Book> Books { get; set; } //base de dados- guarda todos os dados dos livros
-
-        public BookContext(DbContextOptions<BookContext> options) : base(options)
-        {
-        }
-    }
-
-    [Route($"{nameof(Book)}")] //ajudam a definir como o controlador lida com as solicitações de uma API
+    [Route("api/Books")]
     [ApiController]
-    public class BookController : ControllerBase //É algo que responde aos pedidios feitos pelo HTML (utilizador)
+    public class BookController : ControllerBase
     {
         private readonly BookContext _context;
 
@@ -26,14 +18,13 @@ namespace BooksController
             _context = context;
         }
 
-        [HttpGet] //fica com os dados e permite o GetLivros();
+        [HttpGet("GetBooks")]
         public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
         {
             return await _context.Books.ToListAsync();
         }
 
-
-        [HttpGet("{id}")]
+        [HttpGet("GetBook/{id}")]
         public async Task<ActionResult<Book>> GetBook(int id)
         {
             var book = await _context.Books.FindAsync(id);
@@ -45,22 +36,19 @@ namespace BooksController
 
             return book;
         }
-        [HttpPost]
-        public async Task<ActionResult<book>> PostLivro(Book book)
+
+        [HttpPost("PostBook")]
+        public async Task<ActionResult<Book>> PostBook(Book book)
         {
             _context.Books.Add(book);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction($"{nameof(GetBook)}", new { id = book.Id }, book);
+            return CreatedAtAction("GetBook", new { id = book.Id }, book);
         }
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutLivro(int id, Book book)
-        {
-            if (id != book.Id)
-            {
-                return BadRequest();
-            }
 
+        [HttpPut("PutBook/{id}")]
+        public async Task<IActionResult> PutBook(int id, Book book)
+        {
             _context.Entry(book).State = EntityState.Modified;
 
             try
@@ -69,9 +57,7 @@ namespace BooksController
             }
             catch (DbUpdateConcurrencyException)
             {
-                bool BookExists = await _context.Books.AnyAsync(l => l.Id == id);
-
-                if (!BookExists)
+                if (!BookExists(id))
                 {
                     return NotFound();
                 }
@@ -81,11 +67,11 @@ namespace BooksController
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLivro(int id)
+        [HttpDelete("DeleteBook/{id}")]
+        public async Task<IActionResult> DeleteBook(int id)
         {
             var book = await _context.Books.FindAsync(id);
             if (book == null)
@@ -96,9 +82,11 @@ namespace BooksController
             _context.Books.Remove(book);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok();
         }
 
-        private bool LivroExiste(int id) => _context.Books.Any(e => e.Id == id);
+        private bool BookExists(int id) => _context.Books.Any(e => e.Id == id);
     }
 }
+
+
