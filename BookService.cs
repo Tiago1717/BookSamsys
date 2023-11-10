@@ -39,8 +39,18 @@ public class BookService : IBookService
                 return response;
             }
 
+            public async Task<MessagingHelper<List<BookDTO>>> GetBookAsync(string isbn)
+            {
+                var response = new MessagingHelper<List<BookDTO>>();
+                string notFoundMessage = "Book not found.";
+                string foundMessage = "Book found.";
 
-            async Task<Book> IBookService.CreateBookAsync(Book book)
+                var book = await _appDbContext.Books.Include(x => x.Author).SingleOrDefaultAsync(x => x.Isbn == isbn);
+
+                var bookDetailsDTO = _mapper.Map<BookDTO>(book);
+
+
+                async Task<Book> IBookService.CreateBookAsync(Book book)
     {
         await _BookRepository.AddAsync(book);
         await _BookRepository.SaveChangesAsync();
