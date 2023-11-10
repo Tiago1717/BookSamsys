@@ -14,14 +14,33 @@ using IBookService;
 namespace BookService;
 public class BookService : IBookService
 {
-    private readonly IBookRepository _BookRepository;
-
-    public BookService(IBookRepository BookRepository)
+    public class BookService : IBookService
     {
-        _BookRepository = BookRepository;
-    }
+        private readonly AppDBContext _appDbContext;
+        private readonly IMapper _mapper;
 
-    async Task<Book> IBookService.CreateBookAsync(Book book)
+        public BookService(AppDBContext appDbContext, IMapper mapper)
+        {
+            _appDbContext = appDbContext;
+            _mapper = mapper;
+        }
+
+        public async Task<MessagingHelper<List<BookDTO>>> GetBooksAsync()
+        {
+            var response = new MessagingHelper<List<BookDTO>>();
+            string errorMessage = "Error occurred while obtaining data";
+
+            var checkBooks = await _appDbContext.Books.Include(x => x.Author).ToListAsync();
+
+            if (checkBooks == null)
+            {
+                response.Success = false;
+                response.Message = errorMessage;
+                return response;
+            }
+
+
+            async Task<Book> IBookService.CreateBookAsync(Book book)
     {
         await _BookRepository.AddAsync(book);
         await _BookRepository.SaveChangesAsync();
