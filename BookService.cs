@@ -38,21 +38,73 @@ public class BookService : IBookService
                 response.Message = errorMessage;
                 return response;
             }
+            var booksDTO = _mapper.Map<List<BookDTO>>(checkBooks);
 
-            public async Task<MessagingHelper<List<BookDTO>>> GetBookAsync(string isbn)
+            response.Obj = booksDTO;
+            response.Success = true;
+            return response;
+        }
+        
+        response.Obj = new List<BookDTO> { bookDetailsDTO
+    };
+    response.Success = true;
+            response.Message = foundMessage;
+            return response;
+        }
+
+public async Task<MessagingHelper<List<AddBookDTO>>> AddBookAsync(AddBookDTO objBook)
+{
+    var response = new MessagingHelper<List<AddBookDTO>>();
+    string errorMessage = "Error occurred while adding data";
+    string isbnAlreadyExistsMessage = "Book with the provided ISBN already exists.";
+    string authorNotExists = "Author provided does not exist.";
+    string createdMessage = "Book created.";
+
+
+
+    public async Task<MessagingHelper<List<BookDTO>>> GetBookAsync(string isbn)
+        {
+            var response = new MessagingHelper<List<BookDTO>>();
+            string notFoundMessage = "Book not found.";
+            string foundMessage = "Book found.";
+
+            var book = await _appDbContext.Books.Include(x => x.Author).SingleOrDefaultAsync(x => x.Isbn == isbn);
+
+            var bookDetailsDTO = _mapper.Map<BookDTO>(book);
+
+            if (book == null)
             {
-                var response = new MessagingHelper<List<BookDTO>>();
-                string notFoundMessage = "Book not found.";
-                string foundMessage = "Book found.";
+                response.Success = false;
+                response.Message = notFoundMessage;
+                return response;
+            }
 
-                var book = await _appDbContext.Books.Include(x => x.Author).SingleOrDefaultAsync(x => x.Isbn == isbn);
+        public async Task<MessagingHelper<List<AddBookDTO>>> AddBookAsync(AddBookDTO objBook)
+        {
+            var response = new MessagingHelper<List<AddBookDTO>>();
+            string errorMessage = "Error occurred while adding data";
+            string isbnAlreadyExistsMessage = "Book with the provided ISBN already exists.";
+            string authorNotExists = "Author provided does not exist.";
+            string createdMessage = "Book created.";
 
-                var bookDetailsDTO = _mapper.Map<BookDTO>(book);
+            if (objBook.Isbn.Length != 13 || objBook.Price < 0 || objBook == null)
+            {
+                response.Success = false;
+                response.Message = errorMessage;
+                return response;
+            }
 
 
-                async Task<Book> IBookService.CreateBookAsync(Book book)
-    {
-        await _BookRepository.AddAsync(book);
+
+
+
+
+
+
+
+            //
+            {
+                await _BookRepository.AddAsync(book);
         await _BookRepository.SaveChangesAsync();
         return book;
     }
