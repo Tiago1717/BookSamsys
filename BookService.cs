@@ -93,6 +93,31 @@ public async Task<MessagingHelper<List<AddBookDTO>>> AddBookAsync(AddBookDTO obj
                 response.Message = errorMessage;
                 return response;
             }
+            var checkIfBookExists = await _appDbContext.Books.FindAsync(objBook.Isbn);
+            if (checkIfBookExists != null && checkIfBookExists.Isbn == objBook.Isbn)
+            {
+                response.Success = false;
+                response.Message = isbnAlreadyExistsMessage;
+                return response;
+            }
+
+            var checkIfAuthorExists = await _appDbContext.Authors.FindAsync(objBook.AuthorId);
+            if (checkIfAuthorExists == null)
+            {
+                response.Success = false;
+                response.Message = authorNotExists;
+                return response;
+                var book = _mapper.Map<Book>(objBook);
+
+                _appDbContext.Books.Add(book);
+                await _appDbContext.SaveChangesAsync();
+
+                response.Obj = new List<AddBookDTO> { objBook };
+                response.Success = true;
+                response.Message = createdMessage;
+                return response;
+            }
+
 
 
 
