@@ -118,6 +118,45 @@ public async Task<MessagingHelper<List<AddBookDTO>>> AddBookAsync(AddBookDTO obj
                 return response;
             }
 
+            var book = _mapper.Map<Book>(objBook);
+
+            _appDbContext.Books.Add(book);
+            await _appDbContext.SaveChangesAsync();
+
+            response.Obj = new List<AddBookDTO> { objBook };
+            response.Success = true;
+            response.Message = createdMessage;
+            return response;
+        }
+
+        public async Task<MessagingHelper<List<AddBookDTO>>> UpdateBookAsync(string isbn, AddBookDTO bookToUpdate)
+        {
+            var response = new MessagingHelper<List<AddBookDTO>>();
+            string errorMessage = "Error occurred while updating data";
+            string notFoundMessage = "Book not found.";
+            string updatedMessage = "Book updated.";
+
+            if (isbn != bookToUpdate.Isbn || bookToUpdate.Isbn.Length != 13 || bookToUpdate.Price < 0 || bookToUpdate == null)
+            {
+                response.Success = false;
+                response.Message = errorMessage;
+                return response;
+            }
+
+            var book = await _appDbContext.Books.FindAsync(isbn);
+
+            if (book == null)
+            {
+                response.Success = false;
+                response.Message = notFoundMessage;
+                return response;
+            }
+
+            book.Name = bookToUpdate.Name;
+            book.AuthorId = bookToUpdate.AuthorId;
+            book.Price = bookToUpdate.Price;
+
+
 
 
 
