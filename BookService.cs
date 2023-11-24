@@ -151,56 +151,46 @@ public async Task<MessagingHelper<List<AddBookDTO>>> AddBookAsync(AddBookDTO obj
                 response.Message = notFoundMessage;
                 return response;
             }
-
             book.Name = bookToUpdate.Name;
             book.AuthorId = bookToUpdate.AuthorId;
             book.Price = bookToUpdate.Price;
 
+            _appDbContext.Entry(book).State = EntityState.Modified;
+            await _appDbContext.SaveChangesAsync();
 
+            var addBookDTO = _mapper.Map<AddBookDTO>(book);
 
-
-
-
-
-
-
-
-
-            //
-            {
-                await _BookRepository.AddAsync(book);
-        await _BookRepository.SaveChangesAsync();
-        return book;
-    }
-
-    async Task IBookService.DeleteBookAsync(int id)
-    {
-        var book = await _BookRepository.FindAsync(id);
-        if (book != null)
-        {
-            _BookRepository.Remove(book);
-            await _BookRepository.SaveChangesAsync();
+            response.Obj = new List<AddBookDTO> { addBookDTO };
+            response.Success = true;
+            response.Message = updatedMessage;
+            return response;
         }
-    }
-    async Task<Book> IBookService.GetBookAsync(int id)
-    {
-        return await _BookRepository.FindAsync(id);
-    }
 
-    async Task<IEnumerable<Book>> IBookService.GetBooksAsync()
-    {
-        return await _BookRepository.ToListAsync();
-    }
-
-    async Task IBookService.UpdateBookAsync(int id, Book book)
-    {
-        var existing = await _BookRepository.FindAsync(id);
-        if (existing != null)
+        public async Task<MessagingHelper<List<AddBookDTO>>> DeleteBookAsync(string isbn)
         {
-            existing.name = book.name;
-            existing.Author = book.Author;
-            existing.Id = book.id;
-            await _BookRepository.SaveChangesAsync();
+            var response = new MessagingHelper<List<AddBookDTO>>();
+            string errorMessage = "Error occurred while deleting data";
+            string notFoundMessage = "Book not found.";
+            string deletedMessage = "Book deleted.";
+
+            var checkIfBookExists = await _appDbContext.Books.FindAsync(isbn);
+
+            var addBookDTO = _mapper.Map<AddBookDTO>(checkIfBookExists);
+
+            if (checkIfBookExists != null)
+            {
+                _appDbContext.Entry(checkIfBookExists).State = EntityState.Deleted;
+                await _appDbContext.SaveChangesAsync();
+
+                response.Obj = new List<AddBookDTO> { addBookDTO };
+                response.Success = true;
+                response.Message = deletedMessage;
+                return response;
+            }
+
+            response.Success = false;
+            response.Message = notFoundMessage;
+            return response;
         }
     }
 }
