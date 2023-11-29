@@ -21,7 +21,8 @@ namespace BooksController
         [HttpGet("GetBooks")]
         public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
         {
-            return await _context.Books.ToListAsync();
+            var books = await _context.Books.ToListAsync();
+            return Ok(books);
         }
 
         [HttpGet("GetBook/{id}")]
@@ -34,7 +35,7 @@ namespace BooksController
                 return NotFound();
             }
 
-            return book;
+            return Ok(book);
         }
 
         [HttpPost("PostBook")]
@@ -49,7 +50,13 @@ namespace BooksController
         [HttpPut("PutBook/{id}")]
         public async Task<IActionResult> PutBook(int id, Book book)
         {
+            if (id != book.Id)
+            {
+                return BadRequest();
+            }
+
             _context.Entry(book).State = EntityState.Modified;
+           
 
             try
             {

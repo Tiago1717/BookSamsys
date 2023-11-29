@@ -44,15 +44,31 @@ public class BookService : IBookService
             response.Success = true;
             return response;
         }
-        
-        response.Obj = new List<BookDTO> { bookDetailsDTO
-    };
-    response.Success = true;
+
+        public async Task<MessagingHelper<List<BookDTO>>> GetBookAsync(string isbn)
+        {
+            var response = new MessagingHelper<List<BookDTO>>();
+            string notFoundMessage = "Book not found.";
+            string foundMessage = "Book found.";
+
+            var book = await _appDbContext.Books.Include(x => x.Author).SingleOrDefaultAsync(x => x.Isbn == isbn);
+
+            if (book == null)
+            {
+                response.Success = false;
+                response.Message = notFoundMessage;
+                return response;
+            }
+
+            var bookDetailsDTO = _mapper.Map<BookDTO>(book);
+
+            response.Obj = new List<BookDTO> { bookDetailsDTO };
+            response.Success = true;
             response.Message = foundMessage;
             return response;
         }
 
-public async Task<MessagingHelper<List<AddBookDTO>>> AddBookAsync(AddBookDTO objBook)
+        public async Task<MessagingHelper<List<AddBookDTO>>> AddBookAsync(AddBookDTO objBook)
 {
     var response = new MessagingHelper<List<AddBookDTO>>();
     string errorMessage = "Error occurred while adding data";
@@ -102,11 +118,13 @@ public async Task<MessagingHelper<List<AddBookDTO>>> AddBookAsync(AddBookDTO obj
             }
 
             var checkIfAuthorExists = await _appDbContext.Authors.FindAsync(objBook.AuthorId);
-            if (checkIfAuthorExists == null)
-            {
-                response.Success = false;
-                response.Message = authorNotExists;
-                return response;
+             if (checkIfAuthorExists == null)
+                    {
+                        response.Success = false;
+                        response.Message = authorNotExists;
+                        return response;
+                    }       
+
                 var book = _mapper.Map<Book>(objBook);
 
                 _appDbContext.Books.Add(book);
@@ -117,6 +135,36 @@ public async Task<MessagingHelper<List<AddBookDTO>>> AddBookAsync(AddBookDTO obj
                 response.Message = createdMessage;
                 return response;
             }
+
+            public async Task<MessagingHelper<List<AddBookDTO>>> UpdateBookAsync(string isbn, AddBookDTO bookToUpdate)
+        {
+            var response = new MessagingHelper<List<AddBookDTO>>();
+            string errorMessage = "Error occurred while updating data";
+            string notFoundMessage = "Book not found.";
+            string updatedMessage = "Book updated.";
+
+            if (bookToUpdate == null || isbn != bookToUpdate.Isbn || bookToUpdate.Isbn.Length != 13 || bookToUpdate.Price < 0)
+            {
+                response.Success = false;
+                response.Message = errorMessage;
+                return response;
+            }
+
+            var book = await _appDbContext.Books.FindAsync(isbn);
+
+            if (book == null)
+            {
+                response.Success = false;
+                response.Message = notFoundMessage;
+                return response;
+            }
+
+            book.Name = bookToUpdate.Name;
+            book.AuthorId = bookToUpdate.AuthorId;
+            book.Price = bookToUpdate.Price;
+
+            _appDbContext.Entry(book).State = EntityState.Modified;
+            await _appDbContext.SaveChangesAsync();
 
             var book = _mapper.Map<Book>(objBook);
 
@@ -173,14 +221,14 @@ public async Task<MessagingHelper<List<AddBookDTO>>> AddBookAsync(AddBookDTO obj
             string notFoundMessage = "Book not found.";
             string deletedMessage = "Book deleted.";
 
-            var checkIfBookExists = await _appDbContext.Books.FindAsync(isbn);
+             var book = await _appDbContext.Books.FindAsync(isbn);
 
-            var addBookDTO = _mapper.Map<AddBookDTO>(checkIfBookExists);
-
-            if (checkIfBookExists != null)
+            if (book != null)
             {
-                _appDbContext.Entry(checkIfBookExists).State = EntityState.Deleted;
+                _appDbContext.Entry(book).State = EntityState.Deleted;
                 await _appDbContext.SaveChangesAsync();
+
+                var addBookDTO = _mapper.Map<AddBookDTO>(book);
 
                 response.Obj = new List<AddBookDTO> { addBookDTO };
                 response.Success = true;

@@ -13,7 +13,9 @@ namespace IBookRepository;
         Task CreateBookAsync(Book Book);
         Task UpdateBookAsync(Book Book);
         Task DeleteBookAsync(int id);
-    }
+        Task<bool> ISBNExistsAsync(string isbn);
+        Task<bool> ISBNExistsForOtherLivroAsync(int livroId, string isbn);
+}
 
 public class BookRepository : IBookRepository
 {
