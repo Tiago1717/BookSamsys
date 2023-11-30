@@ -9,90 +9,44 @@ namespace BooksController
 {
     [Route("api/Books")]
     [ApiController]
-    public class BookController : ControllerBase
+    public class BooksController : ControllerBase
     {
-        private readonly BookContext _context;
+        private readonly BookService _bookService;
 
-        public BookController(BookContext context)
+        public BooksController(BookService bookService)
         {
-            _context = context;
+            _bookService = bookService;
         }
 
         [HttpGet("GetBooks")]
-        public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
+        public async Task<ActionResult<MessagingHelper<List<BookDTO>>>> GetBooks()
         {
-            var books = await _context.Books.ToListAsync();
-            return Ok(books);
+            return await _bookService.GetBooks();
         }
 
-        [HttpGet("GetBook/{id}")]
-        public async Task<ActionResult<Book>> GetBook(int id)
+        [HttpGet("{isbn}")]
+        public async Task<ActionResult<MessagingHelper<BookDTO>>> GetBook(string isbn)
         {
-            var book = await _context.Books.FindAsync(id);
-
-            if (book == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(book);
+            return await _bookService.GetBookByIsbn(isbn);
         }
 
         [HttpPost("PostBook")]
-        public async Task<ActionResult<Book>> PostBook(Book book)
+        public async Task<ActionResult<MessagingHelper<BookDTO>>> PostBook([FromBody] BookDTO bookDTO)
         {
-            _context.Books.Add(book);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetBook", new { id = book.Id }, book);
+            return await _bookService.PostBookAsync(bookDTO);
         }
 
-        [HttpPut("PutBook/{id}")]
-        public async Task<IActionResult> PutBook(int id, Book book)
+        [HttpDelete("{isbn}")]
+        public async Task<ActionResult<MessagingHelper<BookDTO>>> DeleteBook(string isbn)
         {
-            if (id != book.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(book).State = EntityState.Modified;
-           
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BookExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    return Conflict();
-                }
-            }
-
-            return Ok();
+            return await _bookService.RemoveBook(isbn);
         }
 
-        [HttpDelete("DeleteBook/{id}")]
-        public async Task<IActionResult> DeleteBook(int id)
+        [HttpPut("{isbn}")]
+        public async Task<ActionResult<MessagingHelper<BookDTO>>> PutBook(string isbn, [FromBody] BookDTO book)
         {
-            var book = await _context.Books.FindAsync(id);
-            if (book == null)
-            {
-                return NotFound();
-            }
-
-            _context.Books.Remove(book);
-            await _context.SaveChangesAsync();
-
-            return Ok();
+            return await _bookService.EditBook(isbn, book);
         }
-
-        private bool BookExists(int id) => _context.Books.Any(e => e.Id == id);
     }
 }
 

@@ -12,14 +12,13 @@ using IBookRepository;
 using IBookService;
 
 namespace BookService;
-public class BookService : IBookService
-{
-    public class BookService : IBookService
+
+    public class BooksService : IBookService
     {
         private readonly AppDBContext _appDbContext;
         private readonly IMapper _mapper;
 
-        public BookService(AppDBContext appDbContext, IMapper mapper)
+        public BooksService(AppDBContext appDbContext, IMapper mapper)
         {
             _appDbContext = appDbContext;
             _mapper = mapper;

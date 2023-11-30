@@ -1,16 +1,33 @@
 using Book;
+using BooksController;
+using BookService;
 using IBookRepository;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Net.Mime;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookRepository;
 
-public class BookRepository : IBookRepository
+[Route("api")]
+[ApiController]
+public class BooksController : ControllerBase
 {
-    private readonly BookContext _context;
+    private readonly BookService _bookService;
 
-    public BookRepository(BookContext context)
+    public BooksController(BookService bookService)
     {
-        _context = context;
+        _bookService = bookService;
     }
 
-    
-}
+    [HttpGet("books")]
+    public async Task<ActionResult<MessagingHelper<List<BookDTO>>>> GetBooks()
+    {
+        var result = await _bookService.GetBooks();
+        return result;
+    }

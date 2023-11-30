@@ -16,11 +16,11 @@ public interface IAuthorRepository
     Task DeleteAuthorAsync(int id);
 }
 
-public class AuthorRepository : IAuthorRepository
+public class AuthorsRepository : IAuthorRepository
 {
     private readonly AuthorsContext _context;
 
-    public AuthorRepository(AuthorsContext context)
+    public AuthorsRepository(AuthorsContext context)
     {
         _context = context;
     }

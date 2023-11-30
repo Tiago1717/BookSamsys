@@ -6,3 +6,4 @@ C:\Users\tiago\OneDrive - Colegio de Gaia\Samsys\BookSamsys\obj\Debug\net7.0\Boo
 C:\Users\tiago\OneDrive - Colegio de Gaia\Samsys\BookSamsys\obj\Debug\net7.0\BookSamsys.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\tiago\OneDrive - Colegio de Gaia\Samsys\BookSamsys\obj\Debug\net7.0\BookSamsys.RazorAssemblyInfo.cache
 C:\Users\tiago\OneDrive - Colegio de Gaia\Samsys\BookSamsys\obj\Debug\net7.0\BookSamsys.RazorAssemblyInfo.cs
+C:\Users\tiago\OneDrive - Colegio de Gaia\Samsys\BookSamsys\obj\Debug\net7.0\BookSamsys.MvcApplicationPartsAssemblyInfo.cs

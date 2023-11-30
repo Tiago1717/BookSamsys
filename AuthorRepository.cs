@@ -8,18 +8,18 @@ namespace AuthorRepository;
 
 public class AuthorRepository : IAuthorRepository
 {
-    private readonly AuthorContext _context;
+    private readonly AuthorsContext _context;
 
-    public AuthorRepository(AuthorContext context)
+    public AuthorRepository(AuthorsContext context)
     {
         _context = context;
     }
 
-    public class AuthorRepository : IAuthorRepository
+    public class AuthorsRepository : IAuthorRepository
     {
         private readonly AuthorsContext _context;
 
-        public AuthorRepository(AuthorsContext context)
+        public AuthorsRepository(AuthorsContext context)
         {
             _context = context;
         }
