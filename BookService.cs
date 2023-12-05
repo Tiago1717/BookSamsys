@@ -240,4 +240,8 @@ namespace BookService;
             return response;
         }
     }
+internal Task<Microsoft.AspNetCore.Mvc.ActionResult<MessagingHelper<List<BookDTO>>>> GetBooks()
+    {
+        throw new NotImplementedException();
+    }
 }

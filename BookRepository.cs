@@ -1,5 +1,7 @@
 using Book;
+using authors;
 using BooksController;
+using IBookService;
 using BookService;
 using IBookRepository;
 using System;
@@ -18,9 +20,9 @@ namespace BookRepository;
 [ApiController]
 public class BooksController : ControllerBase
 {
-    private readonly BookService _bookService;
+    private readonly BooksService _bookService;
 
-    public BooksController(BookService bookService)
+    public BooksController(BooksService bookService)
     {
         _bookService = bookService;
     }
@@ -31,3 +33,35 @@ public class BooksController : ControllerBase
         var result = await _bookService.GetBooks();
         return result;
     }
+
+    [HttpGet("{isbn}")]
+    public async Task<ActionResult<MessagingHelper<BookDTO>>> GetBook(string isbn)
+    {
+        var result = await _bookService.GetBookByIsbn(isbn);
+        return result;
+    }
+
+[HttpPost("books")]
+public async Task<ActionResult<MessagingHelper<BookDTO>>> PostBook([FromBody] BookDTO bookDTO)
+{
+    var result = await _bookService.PostBookAsync(bookDTO);
+    return result;
+}
+
+[HttpDelete("{isbn}")]
+public async Task<ActionResult<MessagingHelper<BookDTO>>> DeleteBook(string isbn)
+{
+    var result = await _bookService.RemoveBook(isbn);
+        return result;
+    }
+
+
+[HttpPut("{isbn}")]
+public async Task<ActionResult<MessagingHelper<BookDTO>>> PutBook(string isbn, [FromBody] BookDTO book)
+{
+    var result = await _bookService.EditBook(isbn, book);
+        return result;
+    }
+
+}
+

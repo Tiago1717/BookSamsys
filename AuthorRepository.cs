@@ -1,60 +1,50 @@
 using authors;
-using AuthorRepository;
-using IAuthorRepository;
-using IAuthorService;
 using AuthorController;
+using AuthorService;
+using IAuthorRepository;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AuthorRepository;
 
-public class AuthorRepository : IAuthorRepository
-{
-    private readonly AuthorsContext _context;
-
-    public AuthorRepository(AuthorsContext context)
+    [Route("api/authors")]
+    [ApiController]
+    public class AuthorRepository : ControllerBase
     {
-        _context = context;
-    }
+        private readonly AuthorRepository _authorRepository;
 
-    public class AuthorsRepository : IAuthorRepository
-    {
-        private readonly AuthorsContext _context;
+    public AuthorsController(AuthorRepository authorRepository) => _authorRepository = authorRepository;
 
-        public AuthorsRepository(AuthorsContext context)
+    [HttpGet]
+        public async Task<MessagingHelper<List<Author>>> GetAuthors()
         {
-            _context = context;
+            return new MessagingHelper<List<Author>> { Obj = await _authorRepository.GetAuthorsAsync(), Success = true };
         }
 
-        public async Task<IEnumerable<Author>> GetAuthorsAsync()
+        [HttpGet("{id}")]
+        public async Task<MessagingHelper<Author>> GetAuthor(int id)
         {
-            return _context.Authors.ToList();
+            return new MessagingHelper<Author> { Obj = await _authorRepository.GetAuthorByIdAsync(id), Success = true };
         }
 
-        public async Task<Author> GetAuthorAsync(int id)
+        [HttpPost]
+        public async Task<MessagingHelper<Author>> PostAuthor([FromBody] Author newAuthor)
         {
-            return _context.Authors.FirstOrDefault(a => a.Id == id);
+            return new MessagingHelper<Author> { Obj = await _authorRepository.PostNewAuthorAsync(newAuthor), Success = true };
         }
 
-        public async Task CreateAuthorAsync(Author author)
+        [HttpDelete("{id}")]
+        public async Task<MessagingHelper<Author>> DeleteAuthor(int id)
         {
-            _context.Authors.Add(author);
-            await _context.SaveChangesAsync();
+            return new MessagingHelper<Author> { Obj = await _authorRepository.RemoveOneAuthorAsync(id), Success = true };
         }
 
-        public async Task UpdateAuthorAsync(Author author)
+        [HttpPut("{id}")]
+        public async Task<MessagingHelper<Author>> PutAuthor(int id, [FromBody] Author author)
         {
-            _context.Authors.Update(author);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task DeleteAuthorAsync(int id)
-        {
-            var author = _context.Authors.FirstOrDefault(a => a.Id == id);
-            if (author != null)
-            {
-                _context.Authors.Remove(author);
-                await _context.SaveChangesAsync();
-            }
+            return new MessagingHelper<Author> { Obj = await _authorRepository.EditOneAuthorAsync(id, author), Success = true };
         }
     }
-}
-}

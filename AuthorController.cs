@@ -1,108 +1,55 @@
 using authors;
+using BookService;
+using AuthorRepository;
+using IAuthorRepository;
+using IAuthorService;
+using AuthorController;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
 
 namespace AuthorController;
 
-public class AuthorsContext : DbContext
+public class AuthorsController : ControllerBase
 {
-    public DbSet<Author> Authors { get; set; }
+    private readonly BooksService _bookService;
 
-    public AuthorsContext(DbContextptions<AuthorsContext> options) : base(options)
+    public AuthorsController(BooksService bookService)
     {
+        _bookService = bookService;
+    }
+
+    [HttpGet("authors")]
+    public async Task<ActionResult<MessagingHelper<List<AuthorDTO>>>> GetAuthors()
+    {
+        var result = await _bookService.GetAuthors();
+        return result;
+    }
+
+    [HttpGet("authors/{id}")]
+    public async Task<ActionResult<MessagingHelper<AuthorDTO>>> GetAuthor(int id)
+    {
+        var result = await _bookService.GetAuthorById(id);
+        return result;
+    }
+
+    [HttpPost("authors")]
+    public async Task<ActionResult<MessagingHelper<AuthorDTO>>> PostAuthor([FromBody] AuthorDTO authorDTO)
+    {
+        var result = await _bookService.PostAuthorAsync(authorDTO);
+        return result;
+    }
+
+    [HttpDelete("authors/{id}")]
+    public async Task<ActionResult<MessagingHelper<AuthorDTO>>> DeleteAuthor(int id)
+    {
+        var result = await _bookService.RemoveAuthor(id);
+        return result;
+    }
+
+    [HttpPut("authors/{id}")]
+    public async Task<ActionResult<MessagingHelper<AuthorDTO>>> PutAuthor(int id, [FromBody] AuthorDTO author)
+    {
+        var result = await _bookService.EditAuthor(id, author);
+        return result;
     }
 }
-
-[Route("api/livros")]
-[ApiController]
-public class AuthorController : ControllerBase
-{
-    private readonly AuthorsContext _context;
-
-    public AuthorController(AuthorsContext context)
-    {
-        _context = context;
-    }
-
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<Author>>> GetAuthors()
-    {
-        var authors = await _context.Authors.ToListAsync();
-        return Ok(authors);
-    }
-
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Author>> GetAuthor(int id)
-    {
-        var author = await _context.Authors.FindAsync(id);
-
-        if (author == null)
-        {
-            return NotFound();
-        }
-
-        return Ok(author);
-    }
-
-    [HttpPost]
-    public async Task<ActionResult<Author>> PostAuthor(Author author)
-    {
-        _context.Authors.Add(author);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction(nameof(GetAuthor), new { ida = author.Id }, author);
-    }
-
-    [HttpPut("{id}")]
-    public async Task<IActionResult> PutAuthor(int id, Author author)
-    {
-        if (id != author.Id)
-        {
-            return BadRequest();
-        }
-
-        _context.Entry(author).State = EntityState.Modified;
-
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!AuthorExists(id))
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
-        }
-
-        return NoContent();
-    }
-
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteAuthor(int id)
-    {
-        var author = await _context.Authors.FindAsync(id);
-
-        if (author == null)
-        {
-            return NotFound();
-        }
-
-        _context.Authors.Remove(author);
-        await _context.SaveChangesAsync();
-
-        return NoContent();
-    }
-
-    private bool AuthorExists(int id)
-    {
-        return _context.Authors.Any(e => e.Id == id);
-    }
-}
-
 
