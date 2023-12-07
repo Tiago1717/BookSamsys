@@ -1,4 +1,4 @@
-using authors;
+using author;
 using BookService;
 using AuthorRepository;
 using IAuthorRepository;

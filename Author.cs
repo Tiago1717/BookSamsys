@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Book;
 
-namespace authors;
+namespace author;
 
 public class Author
 {

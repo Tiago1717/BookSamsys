@@ -3,19 +3,21 @@ using BookRepository;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using author;
 
 namespace IBookRepository;
 
-    public interface IBookRepository
-    {
-        Task<IEnumerable<Book>> GetBooksAsync();
-        Task<Book> GetBookAsync(int id);
-        Task CreateBookAsync(Book Book);
-        Task UpdateBookAsync(Book Book);
-        Task DeleteBookAsync(int id);
-        Task<bool> ISBNExistsAsync(string isbn);
-        Task<bool> ISBNExistsForOtherLivroAsync(int livroId, string isbn);
+public interface IBookRepository
+{
+    Task<IEnumerable<Books>> GetBooksAsync();
+    Task<Books> GetBookAsync(int id);
+    Task CreateBookAsync(Books book);
+    Task UpdateBookAsync(Books book);
+    Task DeleteBookAsync(int id);
+    Task<bool> ISBNExistsAsync(string isbn);
+    Task<bool> ISBNExistsForOtherBookAsync(int bookId, string isbn);
 }
+
 
 public class BookRepository : IBookRepository
 {

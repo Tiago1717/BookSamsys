@@ -1,5 +1,5 @@
 
-using authors;
+using author;
 
 namespace IAuthorService;
 public interface IAuthorService

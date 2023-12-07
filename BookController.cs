@@ -1,9 +1,10 @@
 using Book;
+using BookService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using author;
 
 namespace BooksController
 {
@@ -11,9 +12,9 @@ namespace BooksController
     [ApiController]
     public class BooksController : ControllerBase
     {
-        private readonly BookService _bookService;
+        private readonly BooksService _bookService;
 
-        public BooksController(BookService bookService)
+        public BooksController(BooksService bookService)
         {
             _bookService = bookService;
         }
