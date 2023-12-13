@@ -4,6 +4,15 @@ using BooksController;
 using BookRepository;
 using Microsoft.EntityFrameworkCore;
 
+public class AuthorContext : DbContext
+    {
+        public DbSet<Author> Authors { get; set; }
+
+        public AuthorContext(DbContextOptions<AuthorContext> options) : base(options)
+        {
+        }
+    }
+
 public class BookContext : DbContext
 {
     public DbSet<Books> Books { get; set; }
@@ -12,6 +21,8 @@ public class BookContext : DbContext
     public BookContext(DbContextOptions<BookContext> options) : base(options)
     {
     }
+
+    
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

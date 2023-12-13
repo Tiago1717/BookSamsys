@@ -64,6 +64,8 @@
     <PackageReference Include="Ninject.Web.WebApi.WebHost" Version="3.3.1" />
     <PackageReference Include="NSwag.Generation.WebApi" Version="13.20.0" />
     <PackageReference Include="NSwag.SwaggerGeneration.WebApi" Version="12.3.0" />
+    <PackageReference Include="NuGet.Frameworks" Version="6.8.0" />
+    <PackageReference Include="NuGet.Versioning" Version="6.8.0" />
     <PackageReference Include="PatchMap" Version="3.0.0" />
     <PackageReference Include="Selenium.WebDriver" Version="4.15.0" />
     <PackageReference Include="SimpleInjector.Integration.WebApi" Version="5.0.0" />

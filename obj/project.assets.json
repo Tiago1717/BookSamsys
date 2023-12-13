@@ -3850,6 +3850,24 @@
           }
         }
       },
+      "NuGet.Frameworks/6.8.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/NuGet.Frameworks.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/NuGet.Frameworks.dll": {}
+        }
+      },
+      "NuGet.Versioning/6.8.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/NuGet.Versioning.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/NuGet.Versioning.dll": {}
+        }
+      },
       "NUglify/1.21.0": {
         "type": "package",
         "compile": {
@@ -10481,6 +10499,36 @@
         "nswag.swaggergeneration.webapi.nuspec"
       ]
     },
+    "NuGet.Frameworks/6.8.0": {
+      "sha512": "cN9NyahKgYYScioH4CKn+TYj1eSODxd0RECFnQt6ZmzT6z7PfXlbYpVzbiPsxNgY23iNDMOVkSmOqNZyYxNlQA==",
+      "type": "package",
+      "path": "nuget.frameworks/6.8.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "icon.png",
+        "lib/net472/NuGet.Frameworks.dll",
+        "lib/netstandard2.0/NuGet.Frameworks.dll",
+        "nuget.frameworks.6.8.0.nupkg.sha512",
+        "nuget.frameworks.nuspec"
+      ]
+    },
+    "NuGet.Versioning/6.8.0": {
+      "sha512": "WBu15cdv1lqKkPKXDQOEmEzwKemwrczKYlc2jtuZgRYiZ8TG8F4QzPYiE0Q9eVIpMSk8Aky7mUephf19HjBPOw==",
+      "type": "package",
+      "path": "nuget.versioning/6.8.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "icon.png",
+        "lib/net472/NuGet.Versioning.dll",
+        "lib/netstandard2.0/NuGet.Versioning.dll",
+        "nuget.versioning.6.8.0.nupkg.sha512",
+        "nuget.versioning.nuspec"
+      ]
+    },
     "NUglify/1.21.0": {
       "sha512": "9J44o89PRdcS4GOyj0obkLfjCAuJItI4FrNmwALkjRKlzvHVlTB2ALbC9aigIoCMqzy0Xlc0mIVD/jO9WVDHiA==",
       "type": "package",
@@ -16292,6 +16340,8 @@
       "NSwag.SwaggerGeneration.WebApi >= 12.3.0",
       "Ninject.Web.WebApi >= 3.3.1",
       "Ninject.Web.WebApi.WebHost >= 3.3.1",
+      "NuGet.Frameworks >= 6.8.0",
+      "NuGet.Versioning >= 6.8.0",
       "PatchMap >= 3.0.0",
       "Selenium.WebDriver >= 4.15.0",
       "SimpleInjector.Integration.WebApi >= 5.0.0",
@@ -16560,6 +16610,14 @@
           "Ninject.Web.WebApi.WebHost": {
             "target": "Package",
             "version": "[3.3.1, )"
+          },
+          "NuGet.Frameworks": {
+            "target": "Package",
+            "version": "[6.8.0, )"
+          },
+          "NuGet.Versioning": {
+            "target": "Package",
+            "version": "[6.8.0, )"
           },
           "PatchMap": {
             "target": "Package",

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "30GudEFri5NsM/WduPEa93BtE2CXWEX5ysnz1+TGcLx5yiXr4aYrgQoUEqojuBfP6ju+wlLv9k29/jZKEIj60Q==",
+  "dgSpecHash": "z/gI1zec/yhpv/K3zF/6Jb6YYfCtlz09/mHaj+ZtjbtK0ldcFWArfUVxzXfDo5HNWYrfBzsCddETJ/1tiL3KHA==",
   "success": true,
   "projectFilePath": "C:\\Users\\tiago\\OneDrive - Colegio de Gaia\\Samsys\\BookSamsys\\BookSamsys.csproj",
   "expectedPackageFiles": [
@@ -217,6 +217,8 @@
     "C:\\Users\\tiago\\.nuget\\packages\\nswag.generation.webapi\\13.20.0\\nswag.generation.webapi.13.20.0.nupkg.sha512",
     "C:\\Users\\tiago\\.nuget\\packages\\nswag.swaggergeneration\\12.3.0\\nswag.swaggergeneration.12.3.0.nupkg.sha512",
     "C:\\Users\\tiago\\.nuget\\packages\\nswag.swaggergeneration.webapi\\12.3.0\\nswag.swaggergeneration.webapi.12.3.0.nupkg.sha512",
+    "C:\\Users\\tiago\\.nuget\\packages\\nuget.frameworks\\6.8.0\\nuget.frameworks.6.8.0.nupkg.sha512",
+    "C:\\Users\\tiago\\.nuget\\packages\\nuget.versioning\\6.8.0\\nuget.versioning.6.8.0.nupkg.sha512",
     "C:\\Users\\tiago\\.nuget\\packages\\nuglify\\1.21.0\\nuglify.1.21.0.nupkg.sha512",
     "C:\\Users\\tiago\\.nuget\\packages\\owin\\1.0.0\\owin.1.0.0.nupkg.sha512",
     "C:\\Users\\tiago\\.nuget\\packages\\patchmap\\3.0.0\\patchmap.3.0.0.nupkg.sha512",

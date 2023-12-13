@@ -242,6 +242,14 @@
               "target": "Package",
               "version": "[3.3.1, )"
             },
+            "NuGet.Frameworks": {
+              "target": "Package",
+              "version": "[6.8.0, )"
+            },
+            "NuGet.Versioning": {
+              "target": "Package",
+              "version": "[6.8.0, )"
+            },
             "PatchMap": {
               "target": "Package",
               "version": "[3.0.0, )"

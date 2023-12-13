@@ -6,6 +6,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
+public void ConfigureServices(IServiceCollection services)
+{
+
+    services.AddCors(o => o.Addpo1icy("Mypo1icy", builder =>
+    {
+    builder.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+
+    builder.Withorigins("http://localhost:3000")
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .Allowcredentials();
+
     public class Startup
 {
     public Startup(IConfiguration configuration)
@@ -63,7 +77,9 @@ using System.Collections.Generic;
         });
     }
 }
-}
+
+
+
 
 
 
