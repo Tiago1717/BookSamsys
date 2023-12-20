@@ -1,8 +1,8 @@
-using author;
+using authors;
 using BookService;
-using AuthorRepository;
-using IAuthorRepository;
-using IAuthorService;
+using AuthorRepositorys;
+using IAuthorRepositorys;
+using IAuthorServices;
 using AuthorController;
 using Microsoft.AspNetCore.Mvc;
 

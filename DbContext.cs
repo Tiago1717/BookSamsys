@@ -1,7 +1,7 @@
-using author;
+using authors;
 using Book;
 using BooksController;
-using BookRepository;
+using BookRepositorys;
 using Microsoft.EntityFrameworkCore;
 
 public class AuthorContext : DbContext
@@ -17,6 +17,7 @@ public class BookContext : DbContext
 {
     public DbSet<Books> Books { get; set; }
     public DbSet<Author> Authors { get; set; }
+    public object Author_Book { get; internal set; }
 
     public BookContext(DbContextOptions<BookContext> options) : base(options)
     {

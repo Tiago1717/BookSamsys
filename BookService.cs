@@ -4,12 +4,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using WebAPI.Entities;
-using WebAPI.Infrastructure.DTOs;
 using Book;
-using IBookRepository;
-using IBookService;
-using author;
+using IBookRepositorys;
+using IBookServices;
+using authors;
 
 namespace BookService;
 
