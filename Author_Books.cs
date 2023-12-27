@@ -4,17 +4,19 @@ using Microsoft.EntityFrameworkCore;
 using authors;
 using Book;
 
-namespace Author_Books;
-
-public class Author_Book
+namespace Author_Books
 {
-    [Key]
-    public long id { get; set; }
 
-    [ForeignKey("Book")]
-    public string ISBN { get; set; }
+    public class Author_Book
+    {
+        [Key]
+        public long id { get; set; }
 
-    [ForeignKey("Author")]
-    public long IdAuthor { get; set; }
+        [ForeignKey("Book")]
+        public string ISBN { get; set; }
 
+        [ForeignKey("Author")]
+        public long IdAuthor { get; set; }
+
+    }
 }

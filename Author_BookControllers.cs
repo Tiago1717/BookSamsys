@@ -10,24 +10,30 @@ using authors;
 using Book;
 using AuthorServices;
 using Author_BookServices;
+using MessageHelper;
+using AuthorD;
+using Author_Book1;
+using Author_BookD;
 
-namespace Author_BookControllers;
-
-[Route("api/")]
-[ApiController]
-public class Author_BookController : ControllerBase
+namespace Author_BookControllers
 {
-    private readonly Author_BookService _author_BookService;
 
-    public Author_BookController(Author_BookService author_BookService)
+    [Route("api/")]
+    [ApiController]
+    public class Author_BookController : ControllerBase
     {
-        _author_BookService = author_BookService;
-    }
+        private readonly Author_BookService _author_BookService;
 
-    [HttpPost("autor-livro")]
-    public async Task<MessangingHelper<Author_bookDTO>> PostRelationship([FromBody] Author_bookDTO author_BookDTO)
-    {
-        return await _author_BookService.PostRelationship(author_BookDTO);
-    }
+        public Author_BookController(Author_BookService author_BookService)
+        {
+            _author_BookService = author_BookService;
+        }
 
+        [HttpPost("autor-livro")]
+        public async Task<MessangingHelper<Author_bookDTO>> PostRelationship([FromBody] Author_bookDTO author_BookDTO)
+        {
+            return await _author_BookService.PostRelationship(author_BookDTO);
+        }
+
+    }
 }

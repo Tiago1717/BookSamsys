@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Author_bookDTO.cs~RF17ba072.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Abp.AutoMapper" Version="9.0.0" />
     <PackageReference Include="Abp.Web.Api" Version="9.0.0" />
     <PackageReference Include="Asp.Versioning.WebApi" Version="7.1.0" />

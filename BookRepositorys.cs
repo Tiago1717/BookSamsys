@@ -17,31 +17,32 @@ using System.Linq;
 using NuGet.Versioning;
 using Ninject.Activation;
 
-namespace BookRepositorys;
-
-[Route("api")]
-[ApiController]
-public class BookRepository : ControllerBase
+namespace BookRepositorys
 {
-    private readonly BookContext _context;
-    private BookContext context;
 
-    public BookRepository(BookContext _context)
+    [Route("api")]
+    [ApiController]
+    public class BookRepository : ControllerBase
     {
-        _context = context;
-    }
+        private readonly BookContext _context;
+        private BookContext context;
 
-    public async Task<List<Books>> GetBookAsync()
-    {
-        var books = _context.Books.ToList();
-        return books;
-    }
+        public BookRepository(BookContext _context)
+        {
+            _context = context;
+        }
 
-    public async Task<Books> GetBookByIsbn(string isbn)
-    {
-        var book = _context.Books.FirstOrDefault(b => b.ISBN == isbn);
-        return book;
-    }
+        public async Task<List<Books>> GetBookAsync()
+        {
+            var books = _context.Books.ToList();
+            return books;
+        }
+
+        public async Task<Books> GetBookByIsbn(string isbn)
+        {
+            var book = _context.Books.FirstOrDefault(b => b.ISBN == isbn);
+            return book;
+        }
 
         public async Task<Books> PostNewBook([FromBody] Books newBook)
         {
@@ -65,5 +66,5 @@ public class BookRepository : ControllerBase
             return book;
         }
     }
-
+}
 

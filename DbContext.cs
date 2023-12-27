@@ -1,5 +1,6 @@
 using authors;
 using Book;
+using Author_Books;
 using BooksController;
 using BookRepositorys;
 using Microsoft.EntityFrameworkCore;
@@ -17,21 +18,16 @@ public class BookContext : DbContext
 {
     public DbSet<Books> Books { get; set; }
     public DbSet<Author> Authors { get; set; }
-    public object Author_Book { get; internal set; }
+    public DbSet<Author_Book> Author_Books { get; set; }
+ 
 
     public BookContext(DbContextOptions<BookContext> options) : base(options)
     {
     }
 
-    
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<Books>()
+    protected override void OnModelCreating(ModelBuilder modelBuilder) => modelBuilder.Entity<Books>()
             .HasOne(b => b.Author)
-            .WithMany(a => a.Book)
+            .WithMany(a => a.Books)
             .HasForeignKey(b => b.AuthorId)
             .OnDelete(DeleteBehavior.Cascade);
-    }
-
 }

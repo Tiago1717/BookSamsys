@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "z/gI1zec/yhpv/K3zF/6Jb6YYfCtlz09/mHaj+ZtjbtK0ldcFWArfUVxzXfDo5HNWYrfBzsCddETJ/1tiL3KHA==",
+  "dgSpecHash": "h+Yqx8UP8SNEMyoascbMvp2u4oN0EV8kkOd+TSwqt1hN7YQBC2dEhXtxK+ERN2vE/d0d1nUwszo6816+8ni2kw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\tiago\\OneDrive - Colegio de Gaia\\Samsys\\BookSamsys\\BookSamsys.csproj",
+  "projectFilePath": "D:\\Samsys\\BookSamsys\\BookSamsys.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\tiago\\.nuget\\packages\\abp\\9.0.0\\abp.9.0.0.nupkg.sha512",
     "C:\\Users\\tiago\\.nuget\\packages\\abp.automapper\\9.0.0\\abp.automapper.9.0.0.nupkg.sha512",
