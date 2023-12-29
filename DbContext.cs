@@ -25,9 +25,12 @@ public class BookContext : DbContext
     {
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder) => modelBuilder.Entity<Books>()
-            .HasOne(b => b.Author)
-            .WithMany(a => a.Books)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Books>()
+            .HasOne(b => b.AuthorName)
+            .WithMany(a => a.BookName)
             .HasForeignKey(b => b.AuthorId)
             .OnDelete(DeleteBehavior.Cascade);
+    }
 }
