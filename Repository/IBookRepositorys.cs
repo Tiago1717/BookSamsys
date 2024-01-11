@@ -16,17 +16,19 @@ namespace IBookRepositorys
         Task<bool> ISBNExistsAsync(string ISBN);
         Task<IEnumerable<Books>> GetBooksAsync();
         Task CreateBookAsync(Books book);
-        Task UpdateBookAsync(Books book);
+        Task UpdateBookAsync(string isbn, Books book);
         Task DeleteBookAsync(int id);
         Task<bool> ISBNExistsForOtherBookAsync(int bookId, string isbn);
         Task<IEnumerable<Books>> GetAllBooksAsync();
         Task AddBookAsync(BookDTO bookDTO);
         Task<Books> GetBookByIsbnAsync(string isbn);
+        Task DeleteBookAsync(string isbn);
+        Task UpdateBookAsync(string isbn, BookDTO books);
     }
 
 
 
-    public class BookRepository : IBookRepository
+    public class BookRepository
     {
         private readonly BookContext _context;
 
@@ -104,22 +106,15 @@ namespace IBookRepositorys
             return await _context.Books.ToListAsync();
         }
 
-        public async Task AddBookAsync(BookDTO bookDTO)
-        {
-            var book = new Books
-            {
-                ISBN = bookDTO.ISBN,
-                BookName = bookDTO.BookName,
-                AuthorId = bookDTO.AuthorId,
-                Price = bookDTO.Price
-            };
-
-            await CreateBookAsync(book);
-        }
 
         public async Task<Books> GetBookByIsbnAsync(string isbn)
         {
             return await _context.Books.FirstOrDefaultAsync(book => string.Equals(book.ISBN, isbn, StringComparison.OrdinalIgnoreCase));
+        }
+
+        internal static Task AddBookAsync(BookDTO bookDTO)
+        {
+            throw new NotImplementedException();
         }
     }
 }

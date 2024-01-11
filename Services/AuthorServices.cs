@@ -49,7 +49,7 @@ namespace AuthorServices
             string notFoundMessage = "Author not found.";
             string foundMessage = "Author found.";
 
-            var author = await _authorRepository.GetAuthorByIdAsync(id);
+            var author = await _authorRepository.GetAuthorById(id);
 
             if (author == null)
             {

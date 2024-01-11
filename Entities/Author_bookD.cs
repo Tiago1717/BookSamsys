@@ -6,6 +6,7 @@
         public int BookId { get; set; }
         public DateTime RelationshipDate { get; set; }
         public string RelationshipType { get; set; }
+        
         public string AuthorName { get; set; }
         public string BookTitle { get; set; }
           

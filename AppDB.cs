@@ -1,19 +1,19 @@
-﻿namespace AppDB
+﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+
+namespace AppDB
 {
     internal class AppDBContext
     {
         public object Books { get; internal set; }
         public object Authors { get; internal set; }
-        public object Book { get; internal set; }
 
-        internal object Entry(object book)
+        public async Task<int> SaveChangesAsync()
         {
-            throw new NotImplementedException();
+            
+            Console.WriteLine("Saving changes to the database...");
+            await Task.Delay(100);
+            return 1;
         }
 
-        internal Task SaveChangesAsync()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

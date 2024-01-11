@@ -16,6 +16,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using NuGet.Versioning;
 using Ninject.Activation;
+using BookD;
+using Ecng.ComponentModel;
 
 namespace BookRepositorys
 {
@@ -26,6 +28,7 @@ namespace BookRepositorys
     {
         private readonly BookContext _context;
         private BookContext context;
+        private int AuthorId;
 
         public BookRepository(BookContext _context)
         {
@@ -65,6 +68,16 @@ namespace BookRepositorys
 
             return book;
         }
+        public async Task AddBookAsync(BookDTO bookDTO)
+        {
+            var book = new Books
+            {
+                ISBN = bookDTO.ISBN,
+                BookName = bookDTO.BookName,
+                AuthorId = bookDTO.AuthorId,
+                Price = bookDTO.Price
+            };
+        }
     }
-}
+    }
 

@@ -32,7 +32,7 @@ namespace Author_BookControllers
         [HttpPost("autor-livro")]
         public async Task<MessangingHelper<Author_bookDTO>> PostRelationship([FromBody] Author_bookDTO author_BookDTO)
         {
-            return await _author_BookService.PostRelationship(author_BookDTO);
+            return _author_BookService.PostRelationship(author_BookDTO);
         }
 
     }

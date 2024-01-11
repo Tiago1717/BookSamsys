@@ -33,8 +33,8 @@ namespace BookService
 
         public async Task<ActionResult<MessangingHelper<List<BookDTO>>>> GetBooksAsync()
         {
-            var books = await _bookRepository.GetAllBooksAsync();
-            if (books == null || books.Count == 0)
+            var books = _bookRepository.GetAllBooksAsync();
+            if (books == null || Books.Count == 0)
             {
                 return new MessangingHelper<List<BookDTO>>
                 {
@@ -54,7 +54,7 @@ namespace BookService
 
         public async Task<ActionResult<MessangingHelper<BookDTO>>> GetBookByIsbn(string isbn)
         {
-            var book = await _bookRepository.GetBookByIsbnAsync(isbn);
+            var book = _bookRepository.GetBookByIsbnAsync(isbn);
             if (book == null)
             {
                 return new MessangingHelper<BookDTO>
@@ -75,7 +75,7 @@ namespace BookService
 
         public async Task<ActionResult<MessangingHelper<BookDTO>>> PostBookAsync(BookDTO bookDTO)
         {
-            var book = await _bookRepository.AddBookAsync(bookDTO);
+            var book = BookRepository.AddBookAsync(bookDTO);
             if (book == null)
             {
                 return new MessangingHelper<BookDTO>
@@ -96,7 +96,7 @@ namespace BookService
 
         public async Task<ActionResult<MessangingHelper<BookDTO>>> RemoveBook(string isbn)
         {
-            var book = await _bookRepository.DeleteBookAsync(isbn);
+            var book = _bookRepository.DeleteBookAsync(isbn);
             if (book == null)
             {
                 return new MessangingHelper<BookDTO>
@@ -115,9 +115,9 @@ namespace BookService
             }
         }
 
-        public async Task<ActionResult<MessangingHelper<BookDTO>>> EditBook(string isbn, BookDTO book)
+        public async Task<ActionResult<MessangingHelper<BookDTO>>> EditBook(string isbn, BookDTO books)
         {
-            var book = await _bookRepository.UpdateBookAsync(isbn, book);
+            var book = _bookRepository.UpdateBookAsync(isbn, books);
             if (book == null)
             {
                 return new MessangingHelper<BookDTO>

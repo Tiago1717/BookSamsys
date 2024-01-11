@@ -30,13 +30,13 @@ namespace Author_BookServices
         }
 
 
-        public async Task<MessangingHelper<Author_Book1.Author_Book>> PostRelationship([FromBody] Author_Book1.Author_Book author_Book)
+        public MessangingHelper<Author_Book1.Author_Book> PostRelationship([FromBody] Author_Book1.Author_Book author_Book)
         {
             MessangingHelper<Author_Book1.Author_Book> response = new();
 
 
             var mappedRelationship = _mapper.Map<Author>(author_Book);
-            var newRelationship = await author_BookRepository.PostRelationship(mappedRelationship);
+            var newRelationship = author_BookRepository.PostRelationship(mappedRelationship);
             response.Message = "Relação livro e autor criada com sucesso";
             response.Obj = _mapper.Map<Author_Book1.Author_Book>(newRelationship);
             response.Success = true;

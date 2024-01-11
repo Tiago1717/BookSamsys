@@ -4,6 +4,7 @@ namespace Book
 {
     public class Books
     {
+        public static int Count { get; internal set; }
         public int Id { get; set; }
         public string ISBN { get; set; }
         public string BookName { get; set; }

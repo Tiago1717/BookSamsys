@@ -29,7 +29,7 @@ public class BookContext : DbContext
     {
         modelBuilder.Entity<Books>()
             .HasOne(b => b.AuthorName)
-            .WithMany(a => a.BookName)
+            .WithMany(a => a.Books)
             .HasForeignKey(b => b.AuthorId)
             .OnDelete(DeleteBehavior.Cascade);
     }
