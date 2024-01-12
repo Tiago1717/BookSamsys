@@ -10,7 +10,7 @@ namespace Author_Books
     public class Author_Book
     {
         [Key]
-        public long id { get; set; }
+        public long Id { get; set; }
 
         [ForeignKey("Book")]
         public string ISBN { get; set; }

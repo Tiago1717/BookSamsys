@@ -52,28 +52,28 @@ namespace BookService
             }
         }
 
-        public async Task<ActionResult<MessangingHelper<BookDTO>>> GetBookByIsbn(string isbn)
+    public ActionResult<MessangingHelper<BookDTO>> GetBooksByIsbn(string isbn)
+    {
+        var book = _bookRepository.GetBookByIsbnAsync(isbn);
+        if (book == null)
         {
-            var book = _bookRepository.GetBookByIsbnAsync(isbn);
-            if (book == null)
+            return new MessangingHelper<BookDTO>
             {
-                return new MessangingHelper<BookDTO>
-                {
-                    Status = "Book not found",
-                    Data = null
-                };
-            }
-            else
-            {
-                return new MessangingHelper<BookDTO>
-                {
-                    Status = "Book retrieved successfully",
-                    Data = book
-                };
-            }
+                Status = "Book not found",
+                Data = null
+            };
         }
+        else
+        {
+            return new MessangingHelper<BookDTO>
+            {
+                Status = "Book retrieved successfully",
+                Data = book
+            };
+        }
+    }
 
-        public async Task<ActionResult<MessangingHelper<BookDTO>>> PostBookAsync(BookDTO bookDTO)
+    public async Task<ActionResult<MessangingHelper<BookDTO>>> PostBookAsync(BookDTO bookDTO)
         {
             var book = BookRepository.AddBookAsync(bookDTO);
             if (book == null)
@@ -133,7 +133,11 @@ namespace BookService
                     Status = "Book updated successfully",
                     Data = book
                 };
+
             }
+
         }
+
     }
+
 }

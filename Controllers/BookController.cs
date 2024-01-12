@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using authors;
 using MessageHelper;
 using BookD;
+using BookRepositorys;
 
 namespace BooksController
 {
@@ -33,9 +34,9 @@ namespace BooksController
         }
 
         [HttpGet("{isbn}")]
-        public async Task<ActionResult<MessangingHelper<BookDTO>>> GetBook(string isbn)
+        public async Task<ActionResult<MessangingHelper<BookDTO>>> GetBooksByIsbn(string isbn)
         {
-            return await _bookService.GetBookByIsbn(isbn);
+            return _bookService.GetBooksByIsbn(isbn);
         }
 
         [HttpPost("PatchBook")]

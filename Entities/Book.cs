@@ -6,9 +6,9 @@ namespace Book
     {
         public static int Count { get; internal set; }
         public int Id { get; set; }
-        public string ISBN { get; set; }
-        public string BookName { get; set; }
-        public string AuthorName { get; set; }
+        public required string ISBN { get; set; }
+        public required string BookName { get; set; }
+        public required string AuthorName { get; set; }
         public decimal Price { get; set; }
         public bool Eliminated { get; set; }
         public int AuthorId { get; set; }

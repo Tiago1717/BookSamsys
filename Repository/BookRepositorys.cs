@@ -30,6 +30,10 @@ namespace BookRepositorys
         private BookContext context;
         private int AuthorId;
 
+        public decimal Price { get; private set; }
+        public string ISBN { get; private set; }
+        public string BookName { get; private set; }
+
         public BookRepository(BookContext _context)
         {
             _context = context;
@@ -70,12 +74,13 @@ namespace BookRepositorys
         }
         public async Task AddBookAsync(BookDTO bookDTO)
         {
-            var book = new Books
+            Books books = new Books;
+            var book = books;
             {
-                ISBN = bookDTO.ISBN,
-                BookName = bookDTO.BookName,
-                AuthorId = bookDTO.AuthorId,
-                Price = bookDTO.Price
+                ISBN = bookDTO.ISBN;
+                BookName = bookDTO.BookName;
+                AuthorId = bookDTO.AuthorId;
+                Price = bookDTO.Price;
             };
         }
     }
