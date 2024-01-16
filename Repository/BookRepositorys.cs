@@ -18,6 +18,7 @@ using NuGet.Versioning;
 using Ninject.Activation;
 using BookD;
 using Ecng.ComponentModel;
+using DbContex;
 
 namespace BookRepositorys
 {

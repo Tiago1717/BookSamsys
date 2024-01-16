@@ -7,6 +7,7 @@ using authors;
 using BookD;
 using System.Data.Entity;
 using Abp.Extensions;
+using DbContex;
 
 namespace IBookRepositorys
 {
@@ -112,9 +113,51 @@ namespace IBookRepositorys
             return await _context.Books.FirstOrDefaultAsync(book => string.Equals(book.ISBN, isbn, StringComparison.OrdinalIgnoreCase));
         }
 
-        internal static Task AddBookAsync(BookDTO bookDTO)
+        public async Task AddBookAsync(BookDTO bookDTO)
         {
-            throw new NotImplementedException();
+            var book = new Books
+            {
+                ISBN = bookDTO.ISBN,
+                BookName = bookDTO.BookName,
+                AuthorId = bookDTO.AuthorId,
+                Price = bookDTO.Price
+            };
+
+            await CreateBookAsync(book);
+        }*
+
+        public async Task DeleteBookAsync(string isbn)
+        {
+            var existingBook = await _context.Books.FirstOrDefaultAsync(book => string.Equals(book.ISBN, isbn, StringComparison.OrdinalIgnoreCase));
+
+            if (existingBook != null)
+            {
+                _context.Books.Remove(existingBook);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task UpdateBookAsync(string isbn, BookDTO books)
+        {
+            var existingBook = await _context.Books.FindAsync(books.Id);
+
+            if (existingBook == null)
+            {
+                throw new InvalidOperationException("Book not found.");
+            }
+
+            if (!string.Equals(existingBook.ISBN, isbn, StringComparison.OrdinalIgnoreCase) &&
+                await ISBNExistsAsync(books.ISBN))
+            {
+                throw new InvalidOperationException("Book with the provided ISBN already exists.");
+            }
+
+            existingBook.BookName = books.BookName;
+            existingBook.AuthorId = books.AuthorId;
+            existingBook.Price = books.Price;
+
+            _context.Entry(existingBook).State = (Microsoft.EntityFrameworkCore.EntityState)EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
     }
 }

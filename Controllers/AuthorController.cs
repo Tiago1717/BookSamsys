@@ -10,23 +10,25 @@ using Author_BookControllers;
 using MessageHelper;
 using AuthorD;
 using IBookServices;
+using AppDB;
 
 namespace AuthorController
 {
-
     public class AuthorsController : ControllerBase
     {
         private readonly AuthorService _authorService;
+        private readonly AppDbContext _appDbContext; 
 
-        public AuthorsController(AuthorService authorService)
+        public AuthorsController(AuthorService authorService, AppDbContext appDbContext)
         {
             _authorService = authorService;
+            _appDbContext = appDbContext;
         }
 
         [HttpGet("authors")]
         public async Task<ActionResult<MessangingHelper<List<AuthorDTO>>>> GetAuthors()
         {
-            var result = await _authorService.GetAuthors();
+            var result = _authorService.GetAuthors(); 
             return result;
         }
 
@@ -47,17 +49,15 @@ namespace AuthorController
         [HttpDelete("authors/{id}")]
         public async Task<ActionResult<MessangingHelper<AuthorDTO>>> DeleteAuthor(int id)
         {
-            var result = await _authorService.RemoveAuthor(id);
+            var result = await _authorService.RemoveAuthor(id, _appDbContext, _appDbContext); 
             return result;
         }
 
         [HttpPut("authors/{id}")]
         public async Task<ActionResult<MessangingHelper<AuthorDTO>>> PutAuthor(int id, [FromBody] AuthorDTO author)
         {
-            var result = await _authorService.EditAuthor(id, author);
+            var result = await _authorService.EditAuthor(id, author, _appDbContext, _appDbContext); 
             return result;
         }
-
     }
 }
-

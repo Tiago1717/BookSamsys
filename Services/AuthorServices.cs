@@ -9,6 +9,7 @@ using AuthorRepositorys;
 using AutoMapper;
 using MessageHelper;
 using AppDB;
+using DbContex;
 using System.Data.Entity;
 
 namespace AuthorServices
@@ -17,7 +18,7 @@ namespace AuthorServices
     {
         private readonly AuthorRepository _authorRepository;
         private readonly IMapper _mapper;
-        private object _appDbContext;
+        private object AppDbContext;
 
         public AuthorService(AuthorRepository authorRepository, IMapper mapper)
         {
@@ -26,12 +27,12 @@ namespace AuthorServices
         }
 
 
-        public async Task<MessangingHelper<List<AuthorDTO>>> GetAuthors()
+        public MessangingHelper<List<AuthorDTO>> GetAuthors()
         {
             var response = new MessangingHelper<List<AuthorDTO>>();
             string errorMessage = "Error occurred while obtaining authors";
 
-            var authors = await _appDbContext.Authors.ToListAsync();
+            var authors = AppDB.AppDbContext.ToListAsync();
 
             if (authors == null)
             {
@@ -52,7 +53,7 @@ namespace AuthorServices
             var response = new MessangingHelper<AuthorDTO>();
             string notFoundMessage = "Author not found.";
 
-            var author = await _appDbContext.Authors.FindAsync(id);
+            var author = await AppDbContext.Authors.FindAsync(id);
 
             if (author == null)
             {
@@ -77,8 +78,8 @@ namespace AuthorServices
             try
             {
                 var author = _mapper.Map<Author>(authorDTO);
-                _appDbContext.Authors.Add(author);
-                await _appDbContext.SaveChangesAsync();
+                AppDbContext.Authors.Add(author);
+                object value = await AppDbContext.SaveChangesAsync();
 
                 response.Obj = _mapper.Map<AuthorDTO>(author);
                 response.Success = true;
@@ -93,7 +94,7 @@ namespace AuthorServices
             return response;
         }
 
-        public async Task<MessangingHelper<AuthorDTO>> RemoveAuthor(int id)
+        public async Task<MessangingHelper<AuthorDTO>> RemoveAuthor(int id, AppDBContext appDBContext, AppDBContext appDBContext)
         {
             var response = new MessangingHelper<AuthorDTO>();
             string errorMessage = "Error occurred while removing an author.";
@@ -102,7 +103,8 @@ namespace AuthorServices
 
             try
             {
-                var author = await _appDbContext.Authors.FindAsync(id);
+                object authors = AppDbContext.Authors;
+                var author = await authors.FindAsync(id);
 
                 if (author == null)
                 {
@@ -111,8 +113,8 @@ namespace AuthorServices
                     return response;
                 }
 
-                _appDbContext.Authors.Remove(author);
-                await _appDbContext.SaveChangesAsync();
+                Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<AppDB.Author> entityEntry = AppDB.AppDbContext.authors.Remove(author);
+                await AppDbContext.SaveChangesAsync();
 
                 response.Obj = _mapper.Map<AuthorDTO>(author);
                 response.Success = true;
@@ -127,7 +129,7 @@ namespace AuthorServices
             return response;
         }
 
-        public async Task<MessangingHelper<AuthorDTO>> EditAuthor(int id, AuthorDTO authorDTO)
+        public async Task<MessangingHelper<AuthorDTO>> EditAuthor(int id, AuthorDTO authorDTO, AppDBContext appDBContext, AppDBContext appDBContext)
         {
             var response = new MessangingHelper<AuthorDTO>();
             string errorMessage = "Error occurred while updating an author.";
@@ -136,7 +138,7 @@ namespace AuthorServices
 
             try
             {
-                var author = await _appDbContext.Authors.FindAsync(id);
+                var author = AppDbContext.Authors.FindAsync(id);
 
                 if (author == null)
                 {
@@ -147,8 +149,8 @@ namespace AuthorServices
 
                 _mapper.Map(authorDTO, author);
 
-                _appDbContext.Entry(author).State = EntityState.Modified;
-                object value = await _appDbContext.SaveChangesAsync();
+                AppDB.AppDbContext.Entry(author).State = EntityState.Modified;
+                object value = await AppDbContext.SaveChangesAsync();
 
                 response.Obj = _mapper.Map<AuthorDTO>(author);
                 response.Success = true;
