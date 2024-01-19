@@ -43,5 +43,9 @@ namespace Author_BookServices
             return response;
         }
 
+        internal MessangingHelper<Author_bookDTO> PostRelationship(Author_bookDTO author_BookDTO)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

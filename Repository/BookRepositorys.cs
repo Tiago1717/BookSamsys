@@ -73,17 +73,21 @@ namespace BookRepositorys
 
             return book;
         }
-        public async Task AddBookAsync(BookDTO bookDTO)
+        [HttpPost("addbook")]
+        public async Task<ActionResult<Books>> AddBookAsync(BookDTO bookDTO)
         {
-            Books books = new Books;
-            var book = books;
+            Books book = new Books
             {
-                ISBN = bookDTO.ISBN;
-                BookName = bookDTO.BookName;
-                AuthorId = bookDTO.AuthorId;
-                Price = bookDTO.Price;
+                ISBN = bookDTO.ISBN,
+                BookName = bookDTO.BookName,
+                AuthorId = bookDTO.AuthorId,
+                Price = bookDTO.Price
             };
+
+            await _context.Books.AddAsync(book);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetBookByIsbn), new { isbn = book.ISBN }, book);
         }
     }
-    }
+}
 
