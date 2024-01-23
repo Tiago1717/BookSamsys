@@ -30,10 +30,11 @@ namespace DbContex
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Books>()
-                .HasOne(b => b.AuthorName)
-                .WithMany(a => a.Books)
+                .HasOne(b => b.Author)
+                .WithMany(a => a.Books)  
                 .HasForeignKey(b => b.AuthorId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
+
     }
 }

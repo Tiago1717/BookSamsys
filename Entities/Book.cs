@@ -12,5 +12,9 @@ namespace Book
         public decimal Price { get; set; }
         public bool Eliminated { get; set; }
         public int AuthorId { get; set; }
+        public int Book { get; set; }
+        public object Author { get; internal set; }
+
     }
+
 }

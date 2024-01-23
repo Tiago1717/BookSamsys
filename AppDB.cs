@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore;
 
-namespace AppDB
+namespace AppDbcontext
 {
     public class AppDbContext : DbContext
     {
@@ -12,20 +12,22 @@ namespace AppDB
         {
         }
 
+        public AppDbContext()
+        {
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             modelBuilder.Entity<Authors>().HasKey(a => a.Id);
-            modelBuilder.Entity<Authors>().Property(a => a.AuthorName).IsRequired();  
+            modelBuilder.Entity<Authors>().Property(a => a.AuthorName).IsRequired();
 
             modelBuilder.Entity<Books>().HasKey(b => b.Id);
-            modelBuilder.Entity<Books>().Property(b => b.ISBN).IsRequired();  
-            modelBuilder.Entity<Books>().Property(b => b.BookName).IsRequired();  
-            modelBuilder.Entity<Books>().Property(b => b.AuthorName).IsRequired();  
+            modelBuilder.Entity<Books>().Property(b => b.ISBN).IsRequired();
+            modelBuilder.Entity<Books>().Property(b => b.BookName).IsRequired();
 
             modelBuilder.Entity<Books>()
-                .HasOne(b => b.AuthorName)
-                .WithMany(a => a.BookName)
+                .HasOne(b => b.Author)
+                .WithMany(a => a.Books)
                 .HasForeignKey(b => b.AuthorId)
                 .OnDelete(DeleteBehavior.Cascade);
 
@@ -37,18 +39,18 @@ namespace AppDB
     {
         public int Id { get; set; }
         public string AuthorName { get; set; }
-        public int AuthorId { get; set; }
-        public object BookName { get; internal set; }
+        public ICollection<Books> Books { get; set; }
     }
 
     public class Books
     {
+        public static int Count { get; internal set; }
         public int Id { get; set; }
         public string ISBN { get; set; }
         public string BookName { get; set; }
-        public string AuthorName { get; set; }
         public decimal Price { get; set; }
         public bool Eliminated { get; set; }
-        public int AuthorId { get; set; } 
+        public int AuthorId { get; set; }
+        public Authors Author { get; set; }
     }
 }

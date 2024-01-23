@@ -19,6 +19,7 @@ using Ninject.Activation;
 using BookD;
 using Ecng.ComponentModel;
 using DbContex;
+using static Book.Books;
 
 namespace BookRepositorys
 {
@@ -28,55 +29,85 @@ namespace BookRepositorys
     public class BookRepository : ControllerBase
     {
         private readonly BookContext _context;
-        private BookContext context;
-        private int AuthorId;
 
-        public decimal Price { get; private set; }
-        public string ISBN { get; private set; }
-        public string BookName { get; private set; }
-
-        public BookRepository(BookContext _context)
+        public BookRepository(BookContext context)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<List<Books>> GetBookAsync()
+        [HttpGet("books")]
+        public async Task<ActionResult<List<Books>>> GetBooksAsync()
         {
-            var books = _context.Books.ToList();
+            var books = await _context.Books.ToListAsync();
             return books;
         }
 
-        public async Task<Books> GetBookByIsbn(string isbn)
+        [HttpGet("books/{isbn}")]
+        public async Task<ActionResult<Books>> GetBookByIsbn(string isbn)
         {
-            var book = _context.Books.FirstOrDefault(b => b.ISBN == isbn);
+            var book = await _context.Books.FirstOrDefaultAsync(b => b.ISBN == isbn);
+
+            if (book == null)
+            {
+                return NotFound();
+            }
+
             return book;
         }
 
-        public async Task<Books> PostNewBook([FromBody] Books newBook)
+        [HttpPost("books")]
+        public async Task<ActionResult<Books>> PostNewBook([FromBody] Books newBook)
         {
+            if (newBook == null)
+            {
+                return BadRequest();
+            }
+
             await _context.Books.AddAsync(newBook);
             await _context.SaveChangesAsync();
-            return newBook;
+
+            return CreatedAtAction(nameof(GetBookByIsbn), new { isbn = newBook.ISBN }, newBook);
         }
 
-
-        public async Task<Books> RemoveOneBook(string isbn)
+        [HttpDelete("books/{isbn}")]
+        public async Task<ActionResult<Books>> RemoveOneBook(string isbn)
         {
-            var book = _context.Books.FirstOrDefault(b => b.ISBN == isbn);
+            var book = await _context.Books.FirstOrDefaultAsync(b => b.ISBN == isbn);
+
+            if (book == null)
+            {
+                return NotFound();
+            }
+
             _context.Books.Remove(book);
             await _context.SaveChangesAsync();
+
             return book;
         }
-        public async Task<Books> EditOneBook(Books book)
+
+        [HttpPut("books")]
+        public async Task<ActionResult<Books>> EditOneBook([FromBody] Books book)
         {
+            if (book == null)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(book).State = (Microsoft.EntityFrameworkCore.EntityState)System.Data.Entity.EntityState.Modified;
             await _context.SaveChangesAsync();
 
             return book;
         }
+
         [HttpPost("addbook")]
-        public async Task<ActionResult<Books>> AddBookAsync(BookDTO bookDTO)
+        public async Task<ActionResult<Books>> AddBookAsync([FromBody] BookDTO bookDTO)
         {
-            Books book = new Books
+            if (bookDTO == null)
+            {
+                return BadRequest();
+            }
+
+            var book = new Books
             {
                 ISBN = bookDTO.ISBN,
                 BookName = bookDTO.BookName,
@@ -86,8 +117,8 @@ namespace BookRepositorys
 
             await _context.Books.AddAsync(book);
             await _context.SaveChangesAsync();
+
             return CreatedAtAction(nameof(GetBookByIsbn), new { isbn = book.ISBN }, book);
         }
     }
 }
-

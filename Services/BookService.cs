@@ -14,8 +14,10 @@ using AuthorController;
 using MessageHelper;
 using AuthorD;
 using BookD;
-using AppDB;
+using AppDbcontext;
 using StockSharp.Messages;
+using MappingProfiles;
+using Autofac.Core;
 
 namespace BookService
 {
@@ -34,7 +36,7 @@ namespace BookService
         public async Task<ActionResult<MessangingHelper<List<BookDTO>>>> GetBooksAsync()
         {
             var books = _bookRepository.GetAllBooksAsync();
-            if (books == null || Books.Count == 0)
+            if (books == null || AppDbcontext.Books.Count == 0)
             {
                 return new MessangingHelper<List<BookDTO>>
                 {
@@ -73,9 +75,9 @@ namespace BookService
         }
     }
 
-    public async Task<ActionResult<MessangingHelper<BookDTO>>> PostBookAsync(BookDTO bookDTO)
+    public async Task<ActionResult<MessangingHelper<BookDTO>>> PostBookAsync(BookDTO bookDTO, BookRepository bookRepository)
         {
-            var book = BookRepository.AddBookAsync(bookDTO);
+            var book = bookRepository.AddBookAsync(bookDTO);
             if (book == null)
             {
                 return new MessangingHelper<BookDTO>
@@ -136,6 +138,31 @@ namespace BookService
 
             }
 
+        }
+
+        public async Task<ActionResult<MessangingHelper<BookDTO>>> PostBookAsync(BookDTO bookDTO)
+        {
+            var response = new MessangingHelper<BookDTO>();
+            string errorMessage = "Error occurred while adding a book.";
+            string createdMessage = "Book added successfully.";
+           
+
+            try
+            {
+                var book = _mapper.Map<Books>(bookDTO);
+                await _bookRepository.AddBookAsync(book);
+
+                response.Obj = _mapper.Map<BookDTO>(book);
+                response.Success = true;
+                response.Message = createdMessage;
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = $"{errorMessage} Details: {ex.Message}";
+            }
+
+            return response;
         }
 
     }

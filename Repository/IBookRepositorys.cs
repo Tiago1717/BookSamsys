@@ -47,7 +47,7 @@ namespace IBookRepositorys
         {
             return _context.Books.FirstOrDefault(isbn => isbn.Id == id);
         }
-
+        
         public async Task CreateBookAsync(Books Book)
         {
             if (await ISBNExistsAsync(Book.ISBN))
@@ -124,7 +124,7 @@ namespace IBookRepositorys
             };
 
             await CreateBookAsync(book);
-        }*
+        }
 
         public async Task DeleteBookAsync(string isbn)
         {
