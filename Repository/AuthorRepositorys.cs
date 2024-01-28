@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Http;
 using NuGet.Versioning;
 using Ninject.Activation;
 using System.Data.Entity;
-using DbContex;
+using DbContext;
 
 namespace AuthorRepositorys
 {

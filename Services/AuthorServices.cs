@@ -9,7 +9,7 @@ using AuthorD;
 using AuthorRepositorys;
 using AutoMapper;
 using MessageHelper;
-using AppDbcontext;
+using AppDbContex;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -98,7 +98,7 @@ namespace AuthorServices
         }
 
 
-        public async Task<MessangingHelper<AuthorDTO>> RemoveAuthor(int id)
+        public async Task<MessangingHelper<AuthorDTO>> RemoveAuthor(int id, AppDbContex.AppDbContext _appDbContext)
         {
             var response = new MessangingHelper<AuthorDTO>();
             string errorMessage = "Error occurred while removing an author.";

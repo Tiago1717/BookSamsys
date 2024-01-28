@@ -9,6 +9,15 @@ namespace Author_Books
 
     public class Author_Book
     {
+        private Author author;
+        private AppDbContex.Books book;
+
+        public Author_Book(Author author, AppDbContex.Books book)
+        {
+            this.author=author;
+            this.book=book;
+        }
+
         [Key]
         public long Id { get; set; }
 

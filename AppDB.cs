@@ -1,20 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore;
-
-namespace AppDbcontext
+﻿
+namespace AppDbContex
 {
-    public class AppDbContext : DbContext
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.ChangeTracking;
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using DbContext;
+    using authors;
+    using Book;
+    public class AppDbContext : DbContext 
     {
+        internal static Books Book;
+
         public DbSet<Authors> Authors { get; set; }
         public DbSet<Books> Books { get; set; }
-
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-        {
-        }
-
-        public AppDbContext()
-        {
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,6 +32,23 @@ namespace AppDbcontext
                 .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(modelBuilder);
+        }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            try
+            {
+                return await base.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while saving changes.", ex);
+            }
+        }
+
+        public EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class
+        {
+            return base.Entry(entity);
         }
     }
 
@@ -52,5 +69,6 @@ namespace AppDbcontext
         public bool Eliminated { get; set; }
         public int AuthorId { get; set; }
         public Authors Author { get; set; }
+        public string AuthorName { get; internal set; }
     }
 }

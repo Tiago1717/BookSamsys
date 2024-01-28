@@ -5,7 +5,7 @@ using Book;
 using authors;
 using BookRepositorys;
 using Author_Books;
-using DbContex;
+using DbContext;
 
 namespace Author_BookRepositorys
 {
@@ -18,7 +18,7 @@ namespace Author_BookRepositorys
             _context = context;
         }
 
-        public async Task<Author_Books.Author_Book> PostRelationship(Author_Books.Author_Book author_Book)
+        public async Task<Author_Books.Author_Book> PostRelationship(Author_Books.Author_Book author_Book, Author mappedRelationship)
         {
             await _context.AddAsync(author_Book);
             await _context.SaveChangesAsync();
@@ -27,9 +27,13 @@ namespace Author_BookRepositorys
 
         public async Task<List<Author_Books.Author_Book>> GetRelationship()
         {
-            var list = _context.Author_Books.ToList();
+            var list = _context.AuthorBook();
             return list;
         }
 
+        internal object PostRelationship(Author mappedRelationship)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

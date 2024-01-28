@@ -14,10 +14,12 @@ using AuthorController;
 using MessageHelper;
 using AuthorD;
 using BookD;
-using AppDbcontext;
+using AppDbContex;
 using StockSharp.Messages;
 using MappingProfiles;
 using Autofac.Core;
+using Books = AppDbContex.Books;
+using PatchMap;
 
 namespace BookService
 {
@@ -26,17 +28,20 @@ namespace BookService
     {
         private readonly IBookRepository _bookRepository;
         private object _appDbContext;
-        private object _mapper;
+        private readonly IMapper _mapper;
+
+        public IMapper? mapper { get; private set; }
 
         public BooksService(IBookRepository bookRepository)
         {
             _bookRepository = bookRepository;
+            _mapper = mapper;
         }
 
         public async Task<ActionResult<MessangingHelper<List<BookDTO>>>> GetBooksAsync()
         {
             var books = _bookRepository.GetAllBooksAsync();
-            if (books == null || AppDbcontext.Books.Count == 0)
+            if (books == null || Books.Count == 0)
             {
                 return new MessangingHelper<List<BookDTO>>
                 {
@@ -54,35 +59,14 @@ namespace BookService
             }
         }
 
-    public ActionResult<MessangingHelper<BookDTO>> GetBooksByIsbn(string isbn)
-    {
-        var book = _bookRepository.GetBookByIsbnAsync(isbn);
-        if (book == null)
+        public ActionResult<MessangingHelper<BookDTO>> GetBooksByIsbn(string isbn)
         {
-            return new MessangingHelper<BookDTO>
-            {
-                Status = "Book not found",
-                Data = null
-            };
-        }
-        else
-        {
-            return new MessangingHelper<BookDTO>
-            {
-                Status = "Book retrieved successfully",
-                Data = book
-            };
-        }
-    }
-
-    public async Task<ActionResult<MessangingHelper<BookDTO>>> PostBookAsync(BookDTO bookDTO, BookRepository bookRepository)
-        {
-            var book = bookRepository.AddBookAsync(bookDTO);
+            var book = _bookRepository.GetBookByIsbnAsync(isbn);
             if (book == null)
             {
                 return new MessangingHelper<BookDTO>
                 {
-                    Status = "Book could not be added",
+                    Status = "Book not found",
                     Data = null
                 };
             }
@@ -90,7 +74,7 @@ namespace BookService
             {
                 return new MessangingHelper<BookDTO>
                 {
-                    Status = "Book added successfully",
+                    Status = "Book retrieved successfully",
                     Data = book
                 };
             }
@@ -145,26 +129,21 @@ namespace BookService
             var response = new MessangingHelper<BookDTO>();
             string errorMessage = "Error occurred while adding a book.";
             string createdMessage = "Book added successfully.";
-           
 
             try
             {
                 var book = _mapper.Map<Books>(bookDTO);
                 await _bookRepository.AddBookAsync(book);
-
-                response.Obj = _mapper.Map<BookDTO>(book);
-                response.Success = true;
-                response.Message = createdMessage;
+                response.Status = createdMessage;
+                response.Data = bookDTO;
             }
             catch (Exception ex)
             {
-                response.Success = false;
-                response.Message = $"{errorMessage} Details: {ex.Message}";
+                response.Status = errorMessage;
+                response.Data = null;
             }
 
             return response;
         }
-
     }
-
 }

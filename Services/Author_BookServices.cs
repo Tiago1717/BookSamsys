@@ -19,7 +19,6 @@ namespace Author_BookServices
         private readonly AuthorRepository _authorRepository;
         private readonly BookRepository _bookRepository;
         private readonly IMapper _mapper;
-        private object author_BookRepository;
 
         public Author_BookService(Author_BookRepository author_BookRepository, AuthorRepository authorRepository, BookRepository bookRepository, IMapper mapper)
         {
@@ -36,7 +35,7 @@ namespace Author_BookServices
 
 
             var mappedRelationship = _mapper.Map<Author>(author_Book);
-            var newRelationship = author_BookRepository.PostRelationship(mappedRelationship);
+            var newRelationship = _author_BookRepository.PostRelationship(mappedRelationship);
             response.Message = "Relação livro e autor criada com sucesso";
             response.Obj = _mapper.Map<Author_Book1.Author_Book>(newRelationship);
             response.Success = true;

@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
-using DbContex;
+using DbContext;
 using BookRepositorys;
 using AuthorRepositorys;
 using BookService;
@@ -13,7 +13,7 @@ using AutoMapper;
 using MessageHelper;
 using Book;
 using authors;
-using AppDbcontext;
+using AppDbContex;
 using MappingProfiles;
 
 // continuar dps da 1 fase

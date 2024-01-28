@@ -7,7 +7,7 @@ using authors;
 using BookD;
 using System.Data.Entity;
 using Abp.Extensions;
-using DbContex;
+using DbContext;
 
 namespace IBookRepositorys
 {
@@ -25,6 +25,7 @@ namespace IBookRepositorys
         Task<Books> GetBookByIsbnAsync(string isbn);
         Task DeleteBookAsync(string isbn);
         Task UpdateBookAsync(string isbn, BookDTO books);
+        Task AddBookAsync(AppDbContex.Books book);
     }
 
 
@@ -45,17 +46,17 @@ namespace IBookRepositorys
 
         public async Task<Books> GetBookByIsbnAsync(int id)
         {
-            return _context.Books.FirstOrDefault(isbn => isbn.Id == id);
+            return (Books)_context.Books.FirstOrDefault(isbn => isbn.Id == id);
         }
         
-        public async Task CreateBookAsync(Books Book)
+        public async Task CreateBookAsync(Books Book, BookDTO Books)
         {
             if (await ISBNExistsAsync(Book.ISBN))
             {
                 throw new InvalidOperationException("Book with the provided ISBN already exists.");
             }
 
-            _context.Books.Add(Book);
+            Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<AppDbContex.Books> entityEntry = _context.Books.Add(Books.book);
             await _context.SaveChangesAsync();
         }
 
@@ -104,18 +105,18 @@ namespace IBookRepositorys
 
         public async Task<IEnumerable<Books>> GetAllBooksAsync()
         {
-            return await _context.Books.ToListAsync();
+            return (IEnumerable<Books>)await _context.Books.ToListAsync();
         }
 
 
         public async Task<Books> GetBookByIsbnAsync(string isbn)
         {
-            return await _context.Books.FirstOrDefaultAsync(book => string.Equals(book.ISBN, isbn, StringComparison.OrdinalIgnoreCase));
+            return (Books)await _context.Books.FirstOrDefaultAsync(book => string.Equals(book.ISBN, isbn, StringComparison.OrdinalIgnoreCase));
         }
 
         public async Task AddBookAsync(BookDTO bookDTO)
         {
-            var book = new Books
+            var book = new BookDTO
             {
                 ISBN = bookDTO.ISBN,
                 BookName = bookDTO.BookName,
@@ -123,7 +124,6 @@ namespace IBookRepositorys
                 Price = bookDTO.Price
             };
 
-            await CreateBookAsync(book);
         }
 
         public async Task DeleteBookAsync(string isbn)

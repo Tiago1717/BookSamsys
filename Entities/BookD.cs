@@ -1,7 +1,11 @@
-﻿namespace BookD
+﻿using AppDbContex;
+
+namespace BookD
 {
     public class BookDTO
     {
+        internal Books book;
+
         public int Id { get; set; }
         public string ISBN { get; set; }
         public string BookName { get; set; }
